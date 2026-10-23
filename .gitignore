@@ -1,0 +1,37 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments
+.venv/
+.venv*/
+venv/
+env/
+
+# Build and packaging output
+bin/
+build/
+dist/
+*.apk
+*.aab
+*.spec.bak
+
+# Local application data and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.db
+*.sqlite3
+
+# IDE and operating-system files
+.idea/
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
