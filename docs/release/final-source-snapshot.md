@@ -72,9 +72,12 @@ independent clean-machine or byte-for-byte reproducible-build demonstration.
 - Bounded candidate-file scan found no matching private-key headers, token
   prefixes or risky vault/key file paths. This is not a full Git-history or
   independent security audit. Synthetic test credentials are deliberate fixtures.
-- CI was updated to use Ubuntu 24.04, Xvfb and software graphics for real Kivy
-  widget tests. Remote run outcome is not implied by local success; add its
-  observed run URL/result here or in the progress log when available.
+- CI uses Ubuntu 24.04, Xvfb and software graphics for real Kivy widget tests.
+  [GitHub run 40141573524](https://github.com/xominnow/password-manager/actions/runs/40141573524)
+  completed successfully for source commit
+  `096281a0b09e8d78c420df1a26295c44eff1d908` (dependency install/check,
+  compilation and pytest). Subsequent release-record edits do not change the
+  application code. Final-head CI evidence is logged in the task progress log.
 - Earlier user-reported phone tests were on a Galaxy S25+, Android 17. The exact
   APK identity for each earlier report was not captured. This newly rebuilt APK
   has **not** received a new physical-device smoke test or fresh-setup check.
