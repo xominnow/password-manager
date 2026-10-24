@@ -58,32 +58,32 @@
 ## Phase 4 — Development foundation
 
 - [x] 4.1 Configure the Python project environment.
-- [ ] 4.2 Add dependency pinning and configuration management.
-- [ ] 4.3 Create the application shell and navigation.
-- [ ] 4.4 Create the test framework and test directory.
-- [ ] 4.5 Add GitHub documentation and contribution conventions.
-- [ ] 4.6 Add basic CI checks where practical.
-- [ ] 4.7 Create the initial Android build configuration.
+- [x] 4.2 Add dependency pinning and configuration management.
+- [x] 4.3 Create the application shell and navigation.
+- [x] 4.4 Create the test framework and test directory.
+- [x] 4.5 Add GitHub documentation and contribution conventions.
+- [x] 4.6 Add basic CI checks where practical.
+- [x] 4.7 Create the initial Android build configuration.
 
 ## Phase 5 — Secure vault foundation
 
-- [ ] 5.1 Implement secure random generation.
-- [ ] 5.2 Implement Argon2id key derivation.
-- [ ] 5.3 Implement vault-key creation.
-- [ ] 5.4 Implement master-password key wrapping.
-- [ ] 5.5 Implement recovery-key key wrapping.
-- [ ] 5.6 Implement AES-256-GCM encryption and authentication.
-- [ ] 5.7 Implement encrypted SQLite storage.
-- [ ] 5.8 Implement master-password setup and login.
-- [ ] 5.9 Implement recovery-key reset.
-- [ ] 5.10 Add unit tests for security components.
-- [ ] Gate 5: Review security-core tests and implementation.
+- [x] 5.1 Implement secure random generation.
+- [x] 5.2 Implement Argon2id key derivation.
+- [x] 5.3 Implement vault-key creation.
+- [x] 5.4 Implement master-password key wrapping.
+- [x] 5.5 Implement recovery-key key wrapping.
+- [x] 5.6 Implement AES-256-GCM encryption and authentication.
+- [x] 5.7 Implement encrypted SQLite storage.
+- [x] 5.8 Implement master-password setup and login.
+- [x] 5.9 Implement recovery-key reset.
+- [x] 5.10 Add unit tests for security components.
+- [x] Gate 5: Review security-core tests and implementation.
 
 ## Phase 6 — MVP functionality
 
-- [ ] 6.1 Implement credential creation.
-- [ ] 6.2 Implement credential viewing and password masking.
-- [ ] 6.3 Implement credential editing.
+- [x] 6.1 Implement credential creation.
+- [x] 6.2 Implement credential viewing and password masking.
+- [x] 6.3 Implement credential editing.
 - [ ] 6.4 Implement credential deletion and confirmation.
 - [ ] 6.5 Implement app/website-name search.
 - [ ] 6.6 Implement password generation.
@@ -91,41 +91,41 @@
 - [ ] 6.8 Implement clipboard copying.
 - [ ] 6.9 Implement clipboard clearing after 30 seconds.
 - [ ] 6.10 Implement two-minute inactivity auto-lock.
-- [ ] 6.11 Implement screenshot and screen-recording prevention.
+- [x] 6.11 Implement screenshot and screen-recording prevention.
 - [ ] 6.12 Connect all functions to the approved UI.
-- [ ] Gate 6: Confirm feature-complete MVP.
+- [x] Gate 6: Confirm feature-complete MVP.
 
 ## Phase 7 — Android packaging and private deployment
 
-- [ ] 7.1 Build the APK with the approved Python toolchain.
-- [ ] 7.2 Confirm Android 8.0/API 26-or-newer compatibility target.
-- [ ] 7.3 Confirm no Internet permission is requested.
-- [ ] 7.4 Install the APK on a physical Android phone.
-- [ ] 7.5 Test core workflows on the physical device.
-- [ ] 7.6 Record installation and deployment steps.
-- [ ] 7.7 Prepare private APK distribution.
+- [x] 7.1 Build the APK with the approved Python toolchain.
+- [x] 7.2 Confirm Android 8.0/API 26-or-newer compatibility target.
+- [x] 7.3 Confirm no Internet permission is requested.
+- [x] 7.4 Install the APK on a physical Android phone.
+- [x] 7.5 Test core workflows on the physical device.
+- [x] 7.6 Record installation and deployment steps.
+- [x] 7.7 Prepare public APK distribution through GitHub Releases (user-approved scope change).
 
 ## Phase 8 — Testing and verification
 
-- [ ] 8.1 Complete the test plan.
-- [ ] 8.2 Run automated unit and integration tests.
-- [ ] 8.3 Run manual functional tests.
-- [ ] 8.4 Run security-focused tests.
-- [ ] 8.5 Run usability tests where available.
-- [ ] 8.6 Test clean installation and upgrade behavior.
-- [ ] 8.7 Fix defects and rerun affected tests.
-- [ ] 8.8 Record final test results.
+- [x] 8.1 Complete the test plan.
+- [x] 8.2 Run automated unit and integration tests.
+- [x] 8.3 Run manual functional tests.
+- [x] 8.4 Run security-focused tests.
+- [x] 8.5 Run usability tests where available.
+- [x] 8.6 Test clean installation and upgrade behavior.
+- [x] 8.7 Fix defects and rerun affected tests.
+- [x] 8.8 Record final test results.
 
 ## Phase 9 — Documentation and submission package
 
-- [ ] 9.1 Complete the user manual.
-- [ ] 9.2 Complete the technical documentation.
-- [ ] 9.3 Document architecture and database design.
-- [ ] 9.4 Document security decisions.
-- [ ] 9.5 Document deployment and installation.
-- [ ] 9.6 Document known limitations.
-- [ ] 9.7 Add screenshots and approved GUI mockups.
-- [ ] 9.8 Update the GitHub README.
+- [x] 9.1 Complete the user manual.
+- [x] 9.2 Complete the technical documentation.
+- [x] 9.3 Document architecture and database design.
+- [x] 9.4 Document security decisions.
+- [x] 9.5 Document deployment and installation.
+- [x] 9.6 Document known limitations.
+- [x] 9.7 Add screenshots and approved GUI mockups.
+- [x] 9.8 Update the GitHub README.
 - [ ] 9.9 Create a release tag and final source snapshot.
 - [ ] 9.10 Perform the final submission review.
 
@@ -173,4 +173,57 @@
 | 2026-10-22 | 3.5 | Complete | `app/main.py` and `app/ui/screens.py` implement the Python-only Kivy layout shell; corrected AST syntax check passed | Yes — user provided `PASSKEY` |
 | 2026-10-22 | Gate 3 | Complete | `docs/PHASE_3_REVIEW.md` approved by user | Yes — user provided `PASSKEY` |
 | 2026-10-22 | 4.1 | Complete | Python 3.13.17 environment created; Kivy 2.3.1, cryptography, and argon2 imported successfully; UI syntax check passed | Yes — user provided `PASSKEY` |
-| 2026-10-22 | 4.2 | Complete — awaiting PASSKEY | Direct runtime/development dependencies pinned; immutable `AppSettings` added; `.gitignore` and configuration policy documented; `pip check` and configuration/syntax checks passed | No |
+| 2026-10-22 | 4.2 | Complete | Direct runtime/development dependencies pinned; immutable `AppSettings` added; `.gitignore` and configuration policy documented; `pip check` and configuration/syntax checks passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 4.3 | Complete | Centralized `Routes` definitions; added dedicated `build_app_shell`; wired configured app title; syntax and route-registration checks passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 4.4 | Complete | Added `pytest.ini`, `tests/`, configuration/navigation smoke tests, and test-framework documentation; pytest result: 3 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 4.5 | Complete | Added `README.md`, `CONTRIBUTING.md`, and `SECURITY.md`; documentation presence and `pytest` checks passed with 3 tests passing | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 4.6 | Complete | Added `.github/workflows/ci.yml` and CI documentation; local equivalents passed: dependency check, compileall, and 3 pytest tests | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 4.7 | Complete | Added `buildozer.spec` and WSL2/Buildozer instructions; configuration parsing, compileall, pytest, and diff checks passed; APK build remains a later acceptance check | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.1 | Complete | Added CSPRNG-backed byte, vault-key, AES-GCM nonce, and grouped Base32 recovery-key generation; added validation tests; test result: 7 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.2 | Complete | Added password/recovery Scrypt derivation with approved floor, fresh 16-byte salts, UTF-8 password handling, canonical recovery-key handling, and validation tests; test result: 12 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.3 | Complete | Added immutable validated 256-bit `VaultKey` and secure creation function; key material is excluded from repr; test result: 16 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.4 | Complete | Added master wrapper with Scrypt-derived KEK, fresh salt/nonce, AES-256-GCM authentication, vault-purpose context binding, generic failure handling, and tests; test result: 20 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.5 | Complete | Added independent recovery wrapper with canonical 32-byte recovery input, fresh salt/nonce, authenticated `recovery` context, generic failure handling, and tests; test result: 24 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.6 | Complete | Added reusable AES-256-GCM payload encryption/decryption with fresh 12-byte nonces, required associated data, generic authentication errors, wrapper refactor, and tests; test result: 28 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.7 | Complete | Added SQLite schema and storage layer with foreign-key enforcement, atomic initialization/entry operations, encrypted-payload-only entry rows, wrapper metadata, and tests; test result: 33 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.8 | Complete | Added local setup/login service with password policy, random vault identity/key, atomic master/recovery wrapper initialization, generic authentication failure, and lockable in-memory session; test result: 37 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.9 | Complete | Added recovery-key authentication, new-master validation, atomic master-wrapper replacement, recovery-wrapper preservation, generic failure handling, and tests; test result: 40 passed | Yes — user provided `PASSKEY` |
+| 2026-10-22 | 5.10 | Complete | Added end-to-end setup/login, encrypted-entry, recovery-reset, failed-login, and plaintext-storage invariant tests; test result: 44 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | Gate 5 | Complete | `docs/PHASE_5_REVIEW.md` approved by user; security-core implementation and limitations accepted for Phase 6 | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.1 | Complete | Added credential validation, canonical transient serialization, UUID-style IDs, AES-GCM encryption, authenticated entry context, SQLite insertion, and tests; test result: 47 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.2 | Complete | Added authenticated retrieval, canonical deserialization, masked-by-default `CredentialView`, explicit reveal/hide actions, tamper rejection, and tests; test result: 50 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.3 | Complete | Added atomic credential updates with stable entry IDs, fresh AES-GCM nonces, encrypted-only SQLite replacement, not-found/locked-session validation, and tests; test result: 55 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.4 | Complete | Added vault-scoped credential deletion requiring explicit confirmation, safe no-op behavior for missing entries, locked-session validation, and tests; test result: 58 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.5 | Complete | Added authenticated in-memory app/website-name search over encrypted payloads, deterministic sorting, masked results, tamper rejection, and tests; test result: 62 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.6 | Complete | Added CSPRNG-backed password generation with guaranteed uppercase, lowercase, number, special character, configurable length, validation, and tests; test result: 71 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.7 | Complete | Added non-persistent password-strength feedback for length, character categories, common passwords, repeated runs, predictable sequences, and tests; test result: 78 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.8 | Complete | Added authenticated explicit-reveal clipboard copying, replaceable Kivy clipboard adapter, no logging/persistence, and tests; test result: 81 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.9 | Complete | Added 30-second monotonic clipboard timeout, app-owned value comparison, newer-value protection, reset-on-copy behavior, and tests; test result: 84 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.10 | Complete | Added 120-second monotonic inactivity controller, activity reset, immediate manual lock, locked-session enforcement, and tests; test result: 91 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.11 | Complete | Added Android FLAG_SECURE enforcement at startup, replaceable secure-window adapter, fail-closed behavior, test fakes, and documentation; test result: 95 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | 6.12 | Complete | Connected setup/login/recovery, credential CRUD, search, generation, strength feedback, clipboard timeout, auto-lock, and Android secure-window startup behavior to the Kivy UI; added controller integration tests; test result: 97 passed | Yes — user provided `PASSKEY` |
+| 2026-10-23 | Gate 6 | Complete | Feature-complete MVP behavior is connected to the Kivy UI; automated validation result: 97 passed | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 7.1 | Complete | WSL2, Ubuntu, Java, Buildozer, pinned python-for-android revision `0382d27`, local cryptography/CFFI recipes, and root Android launcher are configured; generated `bin/lockbox-0.1.0-arm64-v8a_armeabi-v7a-debug.apk`; local validation passes: compileall plus 97 tests | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 7.2 | Complete | `buildozer.spec` sets `android.minapi = 26`; the successful APK build invoked python-for-android with `--minsdk 26` and `--ndk-api 26`, confirming the Android 8.0/API 26-or-newer compatibility target | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 7.3 | Complete | The generated APK manifest was inspected directly and did not contain `android.permission.INTERNET`; `buildozer.spec` also requests no permissions | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 7.4 | Complete | Physical device `R5CY117H62E` was authorized through ADB and the APK installed successfully; command result: `Success` | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 7.5 | Complete | User reported all eight physical-device workflows passed and confirmed the updated app runs as expected after recovery-key, clipboard, startup, and typography refinements. Final font sizes: body/buttons/lists 21.6sp, titles 27sp, captions 16.2sp. Automated suite: 100 passed before final typography changes; syntax checks passed afterward | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 7.6 | Complete | Installation and deployment instructions in `docs/release/installation-and-deployment.md` cover source sync, rebuild, ADB installation, launch, validation, and troubleshooting | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 7.7 | Complete | User published release `Lockbox_V0.1.0`; unauthenticated HTTP check followed the APK redirect and returned 200 OK, Content-Length 50341797 bytes. Public APK link recorded in `docs/release/github-release.md`. Full download checksum comparison and installation from another computer were not independently verified | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 8.1 | Complete | Completed `docs/testing/test-plan.md` with acceptance traceability, automated/manual/security/usability/install cases, evidence standards, and exit criteria; recovery-save confirmation is flagged for verification | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 8.2 | Complete | Current local source: compileall passed; pytest reported 100 passed in 23.48s on Python 3.13.17. Evidence in `docs/testing/automated-test-results.md` | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 8.3 | Complete | Manual cycle recorded on user-reported Galaxy S25+, Android 17: 10 cases Pass, M02/M09 Fail with detailed qualifications. Missing recovery-save confirmation remains open; keyboard-history fix skipped by user and retained as a limitation. Unverified subchecks documented in `docs/testing/manual-functional-results.md` | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 8.4 | Complete | Targeted security suite: 43 passed in 11.83s; bounded repository scan found no matching candidates. User reports screenshot/recording blocked and login required after backgrounding over two minutes on Galaxy S25+, Android 17. Open defects and coverage gaps retained in `docs/testing/security-test-results.md` | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 8.5 | Complete | User reports U01/U03/U05 Pass, keyboard-open U02 and enlarged-font U04 Fail on Galaxy S25+, Android 17; startup <5s. DEF-04/05 remain open with exact controls unconfirmed. Search/navigation and 100-entry timings unreported | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 8.6 | Complete | User reports same-version APK reinstall, existing master login, and Upgrade Test entry preservation passed after Windows PowerShell correction. Historical first install retained; checksum comparison, second-device clean install, and post-reinstall recovery unverified. Evidence in `docs/testing/installation-upgrade-results.md` | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 8.7 | Complete | Full suite 107 passed in 26.25s; user reports all three phone retests Pass and subsequent pan-mode keyboard retest Pass. Compileall and 5 UI regressions passed after keyboard-mode adjustment. Fresh-setup confirmation has local evidence only. DEF-02 fix remains skipped; see `docs/testing/defect-remediation.md` | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 8.8 | Complete | Consolidated `docs/testing/final-test-results.md` records automated and user-reported results, acceptance traceability, remediation, skipped clipboard fix, release/source identity limits, and unverified checks | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.1 | Complete | User manual prepared at `docs/user-manual/USER_MANUAL.md`; checked against current screen labels, password policy, generator defaults, recovery and lock behavior, deployment records, and known limitations | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.2 | Complete | Consolidated implementation/maintenance guide in `docs/technical/TECHNICAL_DOCUMENTATION.md`, corrected outdated recovery/UI notes, and verified local documentation links. Current source, build, testing and release limitations are distinguished | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.3 | Complete | Reconciled system/module Mermaid diagrams, trust/data flows, public distribution, schema/ER and DB review with code. Executed documented SQL in memory and matched all four actual table definitions/constraints; foreign keys enabled. Local links verified; rendered export not produced | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.4 | Complete | Security decision register in `docs/architecture/security-decisions.md`; recovery, crypto, session/platform, threat/assumptions and SECURITY policy reconciled to implementation and approved exceptions. Local references verified; no new security certification claimed | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.5 | Complete | Finalized `docs/release/installation-and-deployment.md` and GitHub release guidance with download, shell-specific sync/build/install, integrity, preservation and troubleshooting steps; corrected historical environment notes. Local links/config references checked. No APK build/upload performed | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.6 | Complete | Consolidated `docs/release/known-limitations.md` separates observed clipboard retention/skipped fix, product/security constraints, deferred features and unverified acceptance/release checks. Resolved layout/state defects are distinguished; local references verified | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.7 | Complete | Preserved approved six-screen SVG mockups and generated nine 600x1300 synthetic desktop Kivy UI captures with provenance/gallery. Images visually reviewed; no Android screen protection disabled. Evidence helper excluded from APK source; device screenshots remain unavailable | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.8 | Complete | Replaced stale presentation-shell README with current features, public APK link, labeled UI previews, Windows/WSL development commands, evidence, limits and deliverable index. Local links/assets verified; publication handled by source snapshot workflow | Yes — user provided `PASSKEY` |
+| 2026-10-24 | 9.9 | In progress | Final local suite 107 passed in 26.51s; pip check and compileall pass. Reviewed 154 candidate paths with no matching secret candidates. Existing tag Lockbox_V0.1.0 preserved at foundation commit. Source/APK reconciliation and new snapshot tag publication underway | No |

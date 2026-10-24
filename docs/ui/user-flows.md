@@ -2,7 +2,11 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 3.1
-**Status:** Draft for review
+**Status:** Original flow design reconciled with implemented navigation for task 9.7.
+
+See [GUI evidence](SCREENSHOT_EVIDENCE.md). Screen IDs describe logical states,
+not necessarily separate routes: setup combines S-01–03, entry combines add/edit,
+strength is inline, and locked state is login.
 
 ## Screen map
 
@@ -26,7 +30,7 @@
 ## Navigation overview
 
 ```text
-No vault ──> Welcome ──> Master-password setup ──> Recovery-key confirmation ──> Vault list
+No vault ──> Master-password setup ──> Recovery-key acknowledgement ──> Login ──> Vault list
                                                                                       │
 Existing vault ──> Login ─────────────────────────────────────────────────────────────┘
        │                                                                              │
@@ -35,7 +39,7 @@ Existing vault ──> Login ─────────────────
 Vault list ──> Add credential ──> Generator / strength feedback ──> Vault list
      │
      ├──> Credential detail ──> Edit credential ──> Vault list
-     ├──> Credential detail ──> Copy password ──> Clipboard clears after 30 seconds
+     ├──> Credential detail ──> Reveal then copy ──> Best-effort clipboard expiry
      └──> Lock ──> Login
 ```
 
@@ -46,9 +50,9 @@ Vault list ──> Add credential ──> Generator / strength feedback ──> 
 3. Enter and confirm the master password.
 4. Continue only if the password meets the policy.
 5. Display the recovery key in a protected screen.
-6. Require the user to confirm that the key has been saved.
-7. Initialize the encrypted vault.
-8. Transition to the vault list.
+6. The service has initialized the encrypted vault before displaying its key.
+7. Require the explicit I saved my recovery key acknowledgement.
+8. Transition to login; successful master authentication opens the vault list.
 
 Failure states:
 
@@ -75,9 +79,9 @@ Failure states:
 
 1. Select forgot master password.
 2. Enter the recovery key.
-3. Verify the recovery wrapper.
-4. Enter and confirm a new master password.
-5. Replace the master wrapper.
+3. Continue to new-master entry without yet authenticating the key.
+4. Enter and confirm a new master password and submit Reset password.
+5. Verify the recovery wrapper; replace the master wrapper only on success.
 6. Preserve the recovery wrapper.
 7. Transition to the vault list.
 

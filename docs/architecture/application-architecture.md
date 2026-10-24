@@ -1,53 +1,46 @@
 # Application Architecture and Module Boundaries
 
 **Project:** Android Password Manager
-**Related checklist task:** 2.2
-**Status:** Draft for review
+**Related checklist tasks:** 2.2, 9.3
+**Status:** Implemented architecture reconciled 2026-10-24; awaiting task approval.
 
 ## Architectural style
 
-The application will use a layered, local-first architecture with explicit separation between presentation, application services, domain/security logic, storage, and Android platform adapters.
+The application uses local layered components with presentation, workflow
+coordination, security helpers, SQLite persistence and Android adapters.
+This document describes the actual module layout. The diagram below groups
+responsibilities; see [system diagrams](system-architecture.md) for runtime edges.
 
 ## Layer diagram
 
-```text
-┌──────────────────────────────────────────────┐
-│ Presentation layer                           │
-│ Kivy screens, forms, dialogs, navigation     │
-└──────────────────────┬───────────────────────┘
-                       │ user actions / view state
-                       ▼
-┌──────────────────────────────────────────────┐
-│ Application layer                            │
-│ session, vault, credential, generator flows │
-└───────────────┬───────────────┬──────────────┘
-                │               │
-                ▼               ▼
-┌──────────────────────┐  ┌──────────────────────┐
-│ Security core        │  │ Platform adapters    │
-│ KDF, keys, AES-GCM,  │  │ clipboard, secure    │
-│ authentication       │  │ window, timing       │
-└──────────┬───────────┘  └──────────┬───────────┘
-           │                         │
-           ▼                         │
-┌────────────────────────────────────┴─────────┐
-│ Storage layer                                 │
-│ SQLite repository, serialization, transactions│
-└───────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    UI[Kivy screens and navigation] --> Controller[VaultUiController]
+    Controller --> Vault[Vault setup, login and recovery]
+    Controller --> Credentials[Credential workflows]
+    Controller --> Platform[Clipboard adapter]
+    Controller --> Session[Inactivity control]
+    Vault --> Crypto[Crypto primitives and wrapper types]
+    Credentials --> Crypto
+    Vault --> Storage[SQLite ciphertext storage]
+    Credentials --> Storage
+    Storage --> DB[(vault.sqlite3)]
 ```
 
-## Proposed module structure
+Platform adapters do not call storage. Serialization is in the credential
+service, before encryption. App startup calls the secure-window adapter directly.
+
+## Implemented module structure
 
 ```text
 app/
 ├── main.py                 # Kivy application entry point
-├── ui/                     # Screens, widgets, dialogs, and view models
-├── services/               # User-facing application workflows
-├── domain/                 # Credential and vault data models
-├── security/               # KDF, key hierarchy, encryption, validation
+├── ui/                     # Screens, navigation, VaultUiController
+├── services/               # Credentials, strength feedback, session timer
+├── security/               # Vault workflow, models, KDF, keys, encryption
 ├── storage/                # SQLite connection, schema, repositories
 ├── platform/               # Clipboard, secure-window, and Android adapters
-└── config/                 # Versioned settings and non-secret defaults
+└── config.py               # Non-secret defaults
 ```
 
 ## Module responsibilities
@@ -67,16 +60,19 @@ app/
 
 ### `services/`
 
-- Coordinates setup, login, recovery, CRUD, generation, lock, and clipboard workflows.
-- Owns session-state transitions.
-- Converts domain and security results into UI-safe outcomes.
-- Does not expose raw cryptographic exceptions or sensitive diagnostic values to the UI.
+- Contains credential validation/serialization, encrypted CRUD, in-memory search,
+  strength feedback, and inactivity control.
+- `ui/controller.py` owns active session/selection and coordinates workflows.
+- `security/vault_service.py` handles setup/login/recovery; the generator is
+  `security/password_generator.py`. These are not separate `services/` modules.
+- Screens translate failures to generic user messages.
 
-### `domain/`
+### Data models (no standalone `domain/` directory)
 
-- Defines typed representations for vault entries, session state, and metadata.
-- Contains validation rules that do not require cryptographic primitives.
-- Does not know about Kivy or SQLite implementation details.
+- `CredentialRecord` and `CredentialView` are in `services/credentials.py`.
+- `VaultSetupResult` and `UnlockedVaultSession` are in `security/vault_service.py`.
+- Payload, key and wrapper types are in their `security/` modules.
+- Hidden passwords still exist in plaintext inside in-memory view objects.
 
 ### `security/`
 
@@ -91,7 +87,7 @@ app/
 
 - Owns SQLite schema, connections, transactions, and repositories.
 - Persists ciphertext, nonces, tags, salts, KDF parameters, and non-secret metadata.
-- Does not receive or persist plaintext passwords outside the shortest necessary transaction boundary.
+- Receives encrypted payloads and wrapper metadata, not plaintext credentials.
 - Must not implement key derivation or user-interface behavior.
 
 ### `platform/`
@@ -101,7 +97,7 @@ app/
 - Provides platform-aware timing or lifecycle hooks where needed.
 - Keeps Android-specific calls out of security and domain modules.
 
-### `config/`
+### `config.py`
 
 - Defines versioned, non-secret application settings.
 - Does not contain passwords, recovery keys, vault files, signing keys, or machine-specific secrets.
@@ -109,17 +105,17 @@ app/
 ## Dependency rules
 
 ```text
-ui → services → domain
-              ├→ security
-              ├→ storage
-              └→ platform
-security → domain/config only
-storage  → domain/config only
-platform → config and Android/Python platform APIs
+ui.screens → ui.controller → vault_service / credentials / session / platform
+vault_service → wrapping / randomness / storage.sqlite
+credentials → aead / vault session type / storage.sqlite
+wrapping → kdf / aead / keys / randomness
+storage.sqlite → security payload and wrapper types
+platform.clipboard → session and credential view types / Kivy clipboard
+main → controller / navigation / secure_window / Kivy timer and Window
 ```
 
-- Dependencies point inward toward stable interfaces.
-- Security code must not depend on UI state.
+- Low-level crypto helpers do not depend on UI state. The vault workflow lives
+  in `security/` but depends on storage; this is not a fully independent domain layer.
 - Storage code must not decide authentication or session policy.
 - UI code must not access SQLite directly.
 - No network client or remote service is part of phase one.
@@ -140,11 +136,30 @@ The application service owns whether the vault is locked or unlocked. A locked s
 
 ## Test boundary
 
-Each layer must be testable independently:
+Current test boundaries:
 
 - UI tests validate navigation and user-visible behavior.
-- Service tests validate workflows with fake security/storage/platform adapters.
+- Service tests use real crypto/SQLite (often in memory); clipboard/clock and
+  Android objects are replaced with fakes where needed.
 - Security tests validate cryptographic invariants and failure behavior.
 - Storage tests validate schema, transactions, and ciphertext persistence.
-- Platform tests validate clipboard and secure-window adapters on Android.
+- Local platform tests validate contracts with fakes. User-reported Android
+  capture/recording and locking outcomes are separate evidence.
+
+## UI and session lifecycle
+
+Setup confirms recovery-key retention before normal navigation; login/recovery
+create sessions; save/cancel returns to the vault. Scrollable form content and
+dynamic text/control height support the keyboard and enlarged fonts. Android
+uses pan mode. Entry-to-generator navigation preserves the draft for return.
+
+One-second clipboard/inactivity checks run from `app.main`. Controller lock
+drops active key/view references and invokes `clear_sensitive_screens()` on all
+registered screens. This clears retained inputs/displays, including inactive
+screens. The UI/timer routes back to login. Python/native buffers are not
+guaranteed zeroized. No explicit Android pause/resume lock hook is implemented.
+
+Refer to [technical documentation](../technical/TECHNICAL_DOCUMENTATION.md)
+and [final test results](../testing/final-test-results.md) for current behavior
+and verified limits. Architecture documentation does not constitute a security audit.
 

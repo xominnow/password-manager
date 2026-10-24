@@ -14,6 +14,7 @@ class AppSettings:
 
     app_name: str = "Lockbox"
     auto_lock_seconds: int = 120
+    clipboard_timeout_seconds: int = 30
     minimum_password_length: int = 8
     generated_password_length: int = 20
     require_uppercase: bool = True

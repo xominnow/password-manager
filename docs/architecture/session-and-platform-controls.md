@@ -2,21 +2,21 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 2.6
-**Status:** Draft for review
+**Status:** Implementation-aligned 2026-10-24; see [security decisions](security-decisions.md).
 
 ## Session states
 
-```text
-             initialize
-        ┌───────────────────┐
-        │                   ▼
-   ┌─────────┐       ┌───────────┐
-   │ Locked  │──────▶│ Unlocked  │
-   └────┬────┘ login └─────┬─────┘
-        ▲                  │
-        │     lock/logout │
-        └──────────────────┘
+```mermaid
+stateDiagram-v2
+    [*] --> Setup: No vault
+    [*] --> Locked: Existing vault
+    Setup --> Locked: Saved-key acknowledgement
+    Locked --> Unlocked: Authenticated login or recovery reset
+    Unlocked --> Locked: Manual lock or inactivity
 ```
+
+Setup creates the vault but does not establish an unlocked session. App/process
+restart selects setup or locked according to whether a vault exists.
 
 ### Locked
 
@@ -46,10 +46,13 @@ Biometric unlock is not part of this state machine in phase one.
 
 - The inactivity limit is 120 seconds.
 - The timer starts when the vault becomes unlocked.
-- Qualifying user activity includes deliberate touch or keyboard interaction with the active app, navigation, form submission, viewing an entry, and lock actions.
+- Implemented qualifying activity includes tracked input text changes, navigation
+  and authenticated controller operations. Not every touch/scroll/selection event is tracked.
 - Background execution or an inactive app window must not extend the active session.
 - When 120 seconds elapse without qualifying activity, the app transitions to `Locked`.
-- On resume, the app checks elapsed time before displaying sensitive content.
+- Explicit pause/resume hooks are not implemented; a one-second Kivy timer
+  checks expiry while running. A >120-second background return passed on the
+  test phone, without proving every lifecycle ordering/device safe.
 - Manual lock transitions immediately to `Locked`.
 - The timer must use a monotonic time source rather than wall-clock time.
 
@@ -58,7 +61,7 @@ Biometric unlock is not part of this state machine in phase one.
 1. Stop or cancel the inactivity timer.
 2. Invalidate the active session object.
 3. Clear decrypted entry objects and temporary plaintext values where practical.
-4. Instruct the clipboard adapter to clear an app-owned copied password if its timeout has elapsed.
+4. Clipboard expiry is checked separately by the app timer, not by lock itself.
 5. Return to the login screen.
 6. Prevent the prior session from performing further storage or credential operations.
 
@@ -74,6 +77,12 @@ The application must not claim that Python can guarantee immediate memory erasur
 - The app must not automatically copy the recovery key.
 - If the platform does not permit reliable comparison or clearing, the app must show a warning and record the limitation.
 
+Actual UI permits explicit recovery-key copying during setup. Clearing is
+best-effort and depends on the timer running. Keyboard-history retention was
+observed; the user skipped its fix. App messages do not detect/confirm erasure
+from keyboard history, and sensitive-clip metadata is not explicitly attached.
+The manual documents this limitation rather than claiming history-wide clearing.
+
 ## Screenshot and screen-recording protection
 
 - Enable Android secure-window behavior before displaying vault content, passwords, recovery keys, or authentication input.
@@ -83,26 +92,28 @@ The application must not claim that Python can guarantee immediate memory erasur
 
 ## Android lifecycle behavior
 
-| Event | Required behavior |
+| Event | Implemented behavior / evidence |
 |---|---|
 | App launch with existing vault | Start locked. |
 | App launch without vault | Show setup flow without exposing credentials. |
-| App sent to background | Stop treating background time as active user activity; evaluate lock on resume. |
-| App resumed before 120 seconds | Resume the active session only if the session remains valid. |
-| App resumed after 120 seconds | Lock before showing sensitive content. |
+| App sent to background | No explicit handler; background time is not qualifying activity. |
+| App resumed before 120 seconds | No dedicated hook; device/session behavior not exhaustively tested. |
+| App resumed after 120 seconds | Timer checks elapsed time; user reported login required without exposure on test phone. |
 | Process killed | Require master-password login on next launch. |
 | Orientation or configuration change | Preserve only safe session state; do not duplicate or expose plaintext unnecessarily. |
 | Manual lock | Immediately clear or invalidate active session references. |
 
 ## Platform adapter boundary
 
-The `platform` layer will expose small interfaces for:
+The implemented `platform` layer exposes small interfaces for:
 
 - Clipboard read/write/clear and timeout scheduling
 - Secure-window configuration
-- Monotonic time and lifecycle events
+- Monotonic clocks are injectable in session/clipboard services; no separate lifecycle adapter exists
 
-Application services will depend on these interfaces rather than calling Android APIs directly. Platform adapters must be replaceable with fakes in unit tests.
+Application code uses the clipboard interface and startup secure-window adapter.
+Local tests inject clocks, clipboard and Android objects. Screen cleanup drops
+widget-held values, with an entry/generator draft exception while unlocked.
 
 ## Verification requirements
 

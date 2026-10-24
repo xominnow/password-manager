@@ -17,7 +17,7 @@ The project will use a Python-first Android stack. Kivy provides the mobile UI, 
 | Android packaging | Buildozer | Main build configuration and APK build workflow. |
 | Packaging backend | python-for-android | Cross-compiles Python and packages the app for Android. |
 | Authenticated encryption | `cryptography` `AESGCM` | AES-256-GCM vault-record and wrapped-key encryption. |
-| Password-based derivation | `argon2-cffi` Argon2id API | Derives master and recovery key-encryption keys. |
+| Password-based derivation | `cryptography` Scrypt KDF | Derives master and recovery key-encryption keys without an additional native package. |
 | Secure randomness | Python `secrets` module | Generates vault keys, recovery keys, salts, and nonces. |
 | Local database | Python `sqlite3` | Stores encrypted records and non-secret vault metadata locally. |
 | Android API bridge | Python-to-Android bridge, to be confirmed during build setup | Accesses platform behavior not exposed directly by Kivy. |
@@ -66,7 +66,7 @@ The initial deliverable is a debug APK for private testing. Release signing and 
 ## Validation required before implementation lock
 
 1. Confirm the selected Python and Kivy versions build under the chosen WSL environment.
-2. Confirm the selected Argon2id package can be included by python-for-android.
+2. Confirm the selected Scrypt implementation can be included by python-for-android.
 3. Confirm the `cryptography` AESGCM dependency can be packaged for the target Android ABI.
 4. Confirm the Android bridge needed for secure-window behavior.
 5. Build and install a minimal Kivy APK on the physical test phone.
@@ -77,5 +77,5 @@ The initial deliverable is a debug APK for private testing. Release signing and 
 - Buildozer documentation: https://buildozer.readthedocs.io/en/stable/
 - python-for-android documentation: https://python-for-android.readthedocs.io/en/develop/
 - `cryptography` AES-GCM documentation: https://cryptography.io/en/stable/hazmat/primitives/aead/
-- `argon2-cffi` documentation: https://argon2-cffi.readthedocs.io/en/stable/
+- `cryptography` Scrypt documentation: https://cryptography.io/en/stable/hazmat/primitives/kdf/
 

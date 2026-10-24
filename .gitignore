@@ -12,6 +12,9 @@ venv/
 env/
 
 # Build and packaging output
+.buildozer/
+buildozer*.log
+*.spec.before-*
 bin/
 build/
 dist/

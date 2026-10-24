@@ -2,7 +2,7 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 1.4
-**Status:** Draft for review
+**Status:** Updated to implemented recovery behavior, 2026-10-24; see [security decisions](security-decisions.md).
 
 ## Design decision
 
@@ -13,24 +13,24 @@ Phase one will use a high-entropy recovery key instead of security-question answ
 The vault uses a randomly generated data-encryption key rather than encrypting all vault data directly with the user's password.
 
 ```text
-Master password ──Argon2id──> Master key-encryption key ──AES-256-GCM──┐
+Master password ──Scrypt──> Master key-encryption key ──AES-256-GCM──┐
                                                                          ├──> Vault encryption key
-Recovery key ─────Argon2id──> Recovery key-encryption key ─AES-256-GCM───┘
+Recovery key ─────Scrypt──> Recovery key-encryption key ─AES-256-GCM───┘
                                                                                  │
                                                                                  └──> Encrypted vault records
 ```
 
 ## Setup flow
 
-1. Generate 32 random bytes using the platform-approved cryptographic random source.
-2. Encode the bytes in a user-readable recovery-key format with grouping for transcription.
+1. Select 16 characters independently using `secrets.choice` from ASCII letters and digits.
+2. Display the case-sensitive alphanumeric key; canonical new-format input is 16 ASCII bytes. Legacy grouped Base32 input remains supported as 32 decoded bytes.
 3. Generate a separate random 256-bit vault-encryption key.
-4. Derive a master key-encryption key from the master password using Argon2id and a unique salt.
-5. Derive a recovery key-encryption key from the recovery key using Argon2id and a separate unique salt.
+4. Derive a master key-encryption key from the master password using Scrypt and a unique salt.
+5. Derive a recovery key-encryption key from the recovery key using Scrypt and a separate unique salt.
 6. Wrap the vault-encryption key once with the master key-encryption key.
 7. Wrap the same vault-encryption key separately with the recovery key-encryption key.
 8. Display the recovery key once in a secure screen.
-9. Require the user to confirm possession by re-entering the recovery key or an equivalent full confirmation.
+9. Require the explicit `I saved my recovery key` acknowledgement before normal navigation to login. This is not re-entry verification or persisted proof of possession.
 10. Store only the salts, KDF parameters, wrapped keys, nonces, authentication data, and version metadata.
 
 ## Storage requirements
@@ -60,10 +60,10 @@ The recovery key itself must never be stored in plaintext. The master password m
 
 1. The user selects “Forgot master password.”
 2. The app requests the recovery key.
-3. The app derives the recovery key-encryption key using the stored recovery KDF parameters.
-4. The app attempts to unwrap the recovery-protected vault-encryption key.
-5. If verification fails, the app displays a generic failure message and does not reveal which step failed.
-6. If verification succeeds, the user creates and confirms a new master password.
+3. Continue opens the new-master screen; this step does not validate the key.
+4. The user enters/confirms a new master password and submits Reset password.
+5. The service validates the new password, derives the recovery KEK with stored parameters, and authenticates the recovery wrapper.
+6. Verification failure displays a generic message and does not modify the master wrapper.
 7. The app derives a new master key-encryption key with a new salt.
 8. The app creates a new master-protected wrapper for the existing vault-encryption key.
 9. The previous master-protected wrapper is replaced or invalidated.
@@ -92,6 +92,13 @@ The recovery key itself must never be stored in plaintext. The master password m
 ## User-facing guidance
 
 The setup screen must clearly state that the recovery key should be stored offline in a secure location. It must also state that the application cannot recover access if both the master password and recovery key are lost.
+
+Current UI instructs the user to save the key; full loss guidance is in the
+user manual. Explicit clipboard copying is permitted, never automatic, and
+keyboard history may retain it (user-requested skipped fix). The requested
+16-character format has about 95.3 bits of random choice versus the legacy
+256-bit input. The key cannot restore deleted vault files. Confirmation state
+is not persisted across process termination; save the key before leaving setup.
 
 ## Phase-one boundary
 

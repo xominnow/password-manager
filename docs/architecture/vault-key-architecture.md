@@ -2,7 +2,7 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 2.3
-**Status:** Draft for review
+**Status:** Implementation-aligned 2026-10-24; see [security decisions](security-decisions.md).
 
 ## Design objective
 
@@ -12,14 +12,14 @@ Separate the key that encrypts vault records from the user's authentication secr
 
 ```text
 Master password
-       │ Argon2id + master salt
+       │ Scrypt + master salt
        ▼
 Master key-encryption key (KEK-M)
        │ AES-256-GCM wrapper
        ▼
                          ┌────────────────────────┐
 Recovery key             │ Vault-encryption key   │
-       │ Argon2id +       │ (random 256-bit DEK)   │
+       │ Scrypt +        │ (random 256-bit DEK)   │
        │ recovery salt    └───────────┬────────────┘
        ▼                              │ AES-256-GCM
 Recovery key-encryption key (KEK-R)   ▼
@@ -38,17 +38,19 @@ Recovery key-encryption key (KEK-R)   ▼
 
 ### Master key-encryption key
 
-- Derived from the user-entered master password using Argon2id.
+- Derived from the user-entered master password using Scrypt.
 - Uses a unique random salt stored as non-secret vault metadata.
 - Output is used only to protect the vault-encryption key.
 - A new master password receives a new salt and a new derived KEK.
 
 ### Recovery key-encryption key
 
-- Derived from the one-time high-entropy recovery key using Argon2id.
+- Derived from the recovery key using Scrypt: new input is 16 case-sensitive
+  ASCII alphanumeric bytes; legacy keys decode to 32 bytes.
 - Uses a unique salt separate from the master-password salt.
 - Output is used only to protect the vault-encryption key.
-- Remains available after a master-password reset unless the recovery design is intentionally rotated in a future version.
+- Recovery input and its persisted wrapper remain valid after master reset;
+  the derived KEK need not remain resident. Key rotation is not implemented.
 
 ## Wrapped-key records
 
@@ -117,6 +119,11 @@ The associated data should bind the record identifier, record type, and format v
 2. Invalidate the active vault-encryption-key reference.
 3. Clear decrypted record objects where practical.
 4. Return to the login screen.
+
+Controller lock invokes cleanup on all screens; manual UI or the periodic app
+check selects login. Dropping references is not guaranteed memory zeroization.
+Separate valid database copies can retain their older wrappers/passwords;
+master reset does not revoke backups or prevent database rollback.
 
 ### Credential update
 
