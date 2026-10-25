@@ -37,7 +37,7 @@ The MVP is accepted only when all mandatory criteria pass and the evidence is re
 | ID | Criterion | Required evidence |
 |---|---|---|
 | SEC-AC-01 | Vault records are encrypted and authenticated at rest. | Ciphertext inspection and tamper test. |
-| SEC-AC-02 | Argon2id is used with documented parameters for master and recovery derivation. | Code review and configuration evidence. |
+| SEC-AC-02 | Scrypt is used with documented parameters for master and recovery derivation. | Code review and configuration evidence. |
 | SEC-AC-03 | AES-256-GCM uses fresh nonces for encryption and key wrapping. | Code review and nonce test. |
 | SEC-AC-04 | The vault-encryption key is protected by separate master and recovery wrappers. | Storage-format inspection and recovery test. |
 | SEC-AC-05 | No sensitive values are written to application logs or committed to GitHub. | Log inspection and repository secret scan. |

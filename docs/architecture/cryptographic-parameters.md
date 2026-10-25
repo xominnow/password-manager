@@ -2,27 +2,30 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 2.4
-**Status:** Draft for review
+**Status:** Implementation-aligned 2026-10-24; see [security decisions](security-decisions.md).
 
 ## Parameter-selection principle
 
-The application will use established cryptographic primitives and record the parameters needed to interpret each protected value. The initial values below are a mobile-device baseline, not a substitute for benchmarking on the selected physical phone. Security parameters must not be weakened solely to improve responsiveness without updating the threat model and obtaining review approval.
+The application uses established cryptographic primitives and stores parameters
+needed to interpret protected values. The values below are implemented; dedicated
+Scrypt timing on the phone remains unrecorded. Security parameters must not be
+weakened solely to improve responsiveness without updating the threat model.
 
-## Argon2id configuration
+## Scrypt configuration
 
 ### Initial baseline
 
 | Parameter | Baseline |
 |---|---:|
-| Algorithm | Argon2id |
-| Memory cost | 65,536 KiB / 64 MiB |
-| Time cost | 3 iterations |
-| Parallelism | 1 lane |
+| Algorithm | Scrypt |
+| `n` work factor | 65,536 |
+| `r` block size | 8 |
+| `p` parallelization | 1 |
 | Salt length | 16 random bytes |
 | Output length | 32 bytes |
 | Input encoding | UTF-8 for user-entered password; canonical bytes for recovery key |
 
-The baseline must be benchmarked on the selected physical Android device. The final parameter record must include measured derivation time and device information. Any adjustment must preserve Argon2id and be documented as a security decision.
+The baseline must be benchmarked on the selected physical Android device. The final parameter record must include measured derivation time and device information. Any adjustment must preserve the approved Scrypt floor and be documented as a security decision.
 
 ### Usage rules
 
@@ -30,7 +33,7 @@ The baseline must be benchmarked on the selected physical Android device. The fi
 - Store the algorithm identifier, version, and parameters with the protected wrapper metadata.
 - Treat the master password as sensitive input and never write it to logs or persistent storage.
 - Treat the recovery key as sensitive input and never copy it to the clipboard automatically.
-- Derive raw 32-byte key-encryption keys through a vetted Argon2id API; do not use an encoded password hash string directly as an AES key.
+- Derive raw 32-byte key-encryption keys through the vetted Scrypt API in `cryptography`; do not use an encoded password hash string directly as an AES key.
 - Authenticate the resulting wrapper before releasing the vault-encryption key.
 - Do not silently accept unsupported or weakened parameter values.
 
@@ -44,7 +47,10 @@ The baseline must be benchmarked on the selected physical Android device. The fi
 | Authentication tag | 16 bytes / 128 bits |
 | Key source | Random vault-encryption key or derived key-encryption key |
 
-The Python `cryptography` `AESGCM` interface is the planned implementation. Its output includes the authentication tag with the ciphertext; the storage format must document this representation.
+The implemented `cryptography` `AESGCM` interface appends its tag to ciphertext;
+the nonce is stored separately. New recovery keys have 16 case-sensitive ASCII
+alphanumeric characters (approximately 95.3 bits of random choice), not 256 bits.
+Legacy recovery keys still decode to 32 bytes. See [recovery design](recovery-key-design.md).
 
 ### Nonce rules
 
@@ -56,13 +62,19 @@ The Python `cryptography` `AESGCM` interface is the planned implementation. Its 
 
 ### Associated-data rules
 
-Authenticated but unencrypted associated data must bind ciphertext to its context. The canonical associated-data representation should include:
+Authenticated but unencrypted associated data binds ciphertext to its context.
+Current canonical JSON dictionaries use sorted keys and compact separators:
 
 ```text
-format_version | vault_identifier | purpose | record_identifier | record_type
+Wrapper: format_version, purpose (master/recovery), vault_id (hex)
+Record:  format_version, record_id, record_type (credential), vault_id (hex)
 ```
 
-The exact serialization must be deterministic, versioned, and tested. Wrapper purpose must distinguish `master`, `recovery`, and `record` contexts. Associated data is not secret, but changing it must cause authentication failure.
+Wrappers and records have separate context dictionaries, both at version 1.
+Changing reconstructed associated data causes authentication failure. KDF costs
+and salts are not direct fields in these dictionaries; deriving the correct
+key is necessary for successful authentication. Individual authenticated records
+do not establish rollback protection for an entire database.
 
 ### Decryption rules
 
@@ -82,7 +94,7 @@ The exact serialization must be deterministic, versioned, and tested. Wrapper pu
 
 Before implementation parameters are locked:
 
-1. Measure Argon2id derivation time on the physical test device.
+1. Measure Scrypt derivation time on the physical test device.
 2. Confirm setup and unlock remain usable without weakening the approved security floor.
 3. Verify unique nonce generation across repeated encryptions.
 4. Verify changed ciphertext, nonce, key, or associated data fails authentication.
@@ -92,5 +104,5 @@ Before implementation parameters are locked:
 ## References
 
 - `cryptography` authenticated encryption documentation: https://cryptography.io/en/stable/hazmat/primitives/aead/
-- `argon2-cffi` documentation: https://argon2-cffi.readthedocs.io/en/stable/
+- `cryptography` KDF documentation: https://cryptography.io/en/stable/hazmat/primitives/kdf/
 

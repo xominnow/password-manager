@@ -2,7 +2,7 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 1.3
-**Status:** Draft for review
+**Status:** Reconciled to implementation/accepted scope changes, 2026-10-24; see [security decisions](security-decisions.md).
 
 ## Security objective
 
@@ -18,7 +18,7 @@ Protect the confidentiality and integrity of locally stored credentials while th
 | App/website names | Medium | Encrypt at rest with vault data. |
 | Usernames | High | Encrypt at rest with vault data. |
 | Passwords | Critical | Encrypt at rest and mask during display. |
-| Clipboard contents | Critical | Copy only on explicit action and clear after 30 seconds. |
+| Clipboard contents | Critical | Explicit copy with best-effort 30-second active-clipboard expiry; keyboard history may retain copies. |
 | Active session key material | Critical | Keep only while authenticated and clear on lock where practical. |
 | KDF salts and parameters | Low/required metadata | Store with the vault; they are not secret but must not be modified silently. |
 | Application source and build files | High for integrity | Protect repository history and exclude secrets. |
@@ -59,18 +59,24 @@ The public repository is trusted for source integrity but is visible to everyone
 
 | ID | Threat | Mitigation | Residual risk |
 |---|---|---|---|
-| TM-01 | Vault file is copied from device storage. | Encrypt and authenticate vault data with AES-256-GCM; derive wrapping keys with Argon2id. | A weak user-selected master password remains vulnerable to offline guessing. |
-| TM-02 | Attacker tampers with ciphertext or metadata. | Verify GCM authentication before accepting decrypted data; reject invalid data. | A compromised application or OS can bypass application checks. |
+| TM-01 | Vault file is copied from device storage. | Encrypt and authenticate vault data with AES-256-GCM; derive wrapping keys with Scrypt. | A weak user-selected master password remains vulnerable to offline guessing. |
+| TM-02 | Attacker tampers with ciphertext or metadata. | Verify GCM tags/context and validate supported metadata. | Whole-vault rollback, valid ciphertext replay in the same context, deletion and all metadata changes are not universally detected. |
 | TM-03 | Master password is exposed in storage or logs. | Never persist it; prohibit sensitive logging; inspect logs in testing. | Memory exposure on a compromised device is outside scope. |
 | TM-04 | Recovery key is exposed during setup. | Display once, require confirmation, warn the user, and never write it to logs or files. | A person viewing the screen during setup could capture it. |
-| TM-05 | Recovery key is guessed. | Generate high-entropy random material; do not use security questions. | Loss of the recovery key removes the planned recovery path. |
-| TM-06 | Password is exposed through clipboard. | Copy only by explicit action and clear after 30 seconds. | Other apps or OS behavior may access clipboard data before clearing. |
+| TM-05 | Recovery key is guessed. | Generate 16 random case-sensitive alphanumeric characters; Scrypt; no security questions. | Approximately 95.3 bits of random choice, less than legacy 256-bit input; key exposure enables reset, key loss removes recovery. |
+| TM-06 | Password is exposed through clipboard. | Explicit reveal/copy and best-effort active-clipboard timeout. | Samsung keyboard-history retention observed; fix explicitly skipped. Sensitive-clip metadata is not explicitly set; no history erasure guarantee. |
 | TM-07 | Vault remains open when unattended. | Auto-lock after two minutes and provide manual lock. | The user may leave the app visible during the timeout. |
 | TM-08 | Password is captured through screenshots or recording. | Enable Android secure-window behavior on sensitive screens. | External cameras and fully compromised devices are not prevented. |
 | TM-09 | Public repository contains secrets. | Use `.gitignore`, test fixtures, secret scanning, and repository review. | A user may still intentionally or accidentally publish a secret. |
 | TM-10 | Malicious app reads local files. | Use Android app-private storage and rely on OS sandboxing. | Rooted or compromised devices are outside the protection target. |
-| TM-11 | Brute-force login attempts succeed. | Use strong KDF parameters, generic failure messages, and device/app lock behavior where supported. | Phase one may not provide full hardware-backed rate limiting. |
+| TM-11 | Brute-force login attempts succeed. | Scrypt slows guessing; generic errors and app locking limit some exposure. | No implemented retry throttle or hardware-backed rate limit; weak master passwords remain guessable. |
 | TM-12 | Dependency or APK is modified. | Pin dependencies, record build instructions, review releases, and document APK provenance. | No independent code-signing or supply-chain audit is included in the capstone. |
+| TM-13 | Malicious database sets excessive KDF costs. | Minimum parameter checks and supported algorithm validation exist. | Comprehensive upper bounds are absent; resource-exhaustion protection is incomplete. |
+
+Public APK distribution was approved through GitHub Releases. The app remains
+offline, but build/distribution services and dependencies are supply-chain trust
+boundaries. No final committed-source/APK checksum pair or full toolchain lock
+has been verified; a local fix does not automatically update public assets.
 
 ## Out-of-scope threats
 

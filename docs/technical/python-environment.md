@@ -4,6 +4,11 @@
 **Related checklist task:** 4.1
 **Status:** Draft for review
 
+Current deployment reference: [installation and deployment](../release/installation-and-deployment.md).
+Windows tests now use `.venv313` with Python 3.13.17. The initial global/.venv
+observations below are historical. WSL's existing build environment is separate;
+its Python 3.14 compatibility work is handled by the documented local recipes.
+
 ## Observed environment
 
 - Windows development host
@@ -11,14 +16,17 @@
 - Python virtual environment at `.venv`
 - pip 26.2.2 in the virtual environment
 
-Python 3.15 is available for syntax checks, but Kivy 2.3.1 officially supports Python 3.8–3.13. The current 3.15 environment failed to install Kivy because no compatible Windows dependency build was available. Use Python 3.13 for the Kivy host environment and for WSL2 Android packaging unless later compatibility testing proves a newer version works.
+The initial Python 3.15 environment failed to install the Windows Kivy dependencies.
+Use the verified Python 3.13 Windows test environment. Do not assume the Windows
+version or virtual environment can be reused inside WSL: preserve the separately
+configured Buildozer environment and record its actual toolchain versions.
 
 ## PowerShell setup
 
 From the project root:
 
 ```powershell
-python -m venv .venv313
+py -3.13 -m venv .venv313
 .\.venv313\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -r requirements-dev.txt
@@ -36,7 +44,7 @@ python -m pip install -r requirements-dev.txt
 ```powershell
 python --version
 python -m pip --version
-python -c "import kivy, cryptography, argon2; print('runtime dependencies import successfully')"
+python -c "import kivy, cryptography; from cryptography.hazmat.primitives.kdf.scrypt import Scrypt; print('runtime dependencies import successfully')"
 python -c "import ast, pathlib; files=(pathlib.Path('app/main.py'), pathlib.Path('app/ui/screens.py')); [ast.parse(p.read_text(encoding='utf-8'), filename=str(p)) for p in files]; print('UI syntax check passed')"
 pytest -q
 ```

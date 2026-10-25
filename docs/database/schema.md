@@ -1,12 +1,28 @@
 # Database Design
 
 **Project:** Android Password Manager
-**Related checklist task:** 2.5
-**Status:** Draft for review
+**Related checklist tasks:** 2.5, 9.3
+**Status:** Source-reconciled schema reference, 2026-10-24; awaiting task approval.
 
 ## Storage approach
 
-The application will use a local SQLite database stored inside Android application-private storage. SQLite provides persistence and transactions; application-level AES-256-GCM protects vault data. The database must not be treated as a plaintext credential store.
+The app uses `Path(App.user_data_dir) / "vault.sqlite3"` in Android application
+storage. `app/storage/sqlite.py` owns DDL and SQL. SQLite provides persistence
+and transactions; application-level AES-256-GCM protects credential fields.
+This is not whole-database encryption: IDs, salts, nonces, algorithms, versions,
+timestamps and row counts remain visible. No plaintext name index is stored.
+
+## Format versions and relationships
+
+Database schema and vault metadata version are 2; encrypted record and wrapper
+formats are 1. These are distinct version domains, not interchangeable numbers.
+The wrapper `aad_version` must match its wrapper `format_version`.
+
+See the [entity relationship diagram](DATABASE_DESIGN_REVIEW.md). A vault has
+zero or more entries and, after successful service setup, exactly two wrappers
+(one master, one recovery). The schema permits zero to two wrappers via purpose
+and uniqueness constraints; service initialization enforces exactly two.
+`schema_migrations` is independent of vault rows and has no foreign key.
 
 ## Design principles
 
@@ -17,7 +33,9 @@ The application will use a local SQLite database stored inside Android applicati
 - Use UUID-style entry identifiers that do not contain credential names.
 - Use transactions for initialization, reset, create, update, and delete operations.
 - Enable foreign-key enforcement on every database connection.
-- Reject unknown schema or cryptographic format versions.
+- Reject future schema-ledger versions and unsupported cryptographic payload/
+  wrapper versions. Vault metadata version is stored but is not separately
+  exhaustively validated by all read paths; do not infer universal version rejection.
 
 ## Logical schema
 
@@ -43,10 +61,10 @@ Stores independent encrypted wrappers for the random vault-encryption key.
 | `vault_id` | BLOB | Required; foreign key | Links to `vault_metadata`. |
 | `purpose` | TEXT | Required; `master` or `recovery` | Separates wrapper domains. |
 | `format_version` | INTEGER | Required | Wrapper serialization version. |
-| `kdf_algorithm` | TEXT | Required | Expected value: `argon2id`. |
-| `kdf_memory_cost` | INTEGER | Required | Argon2id memory parameter in KiB. |
-| `kdf_time_cost` | INTEGER | Required | Argon2id time parameter. |
-| `kdf_parallelism` | INTEGER | Required | Argon2id parallelism parameter. |
+| `kdf_algorithm` | TEXT | Required | Expected value: `scrypt`. |
+| `kdf_n` | INTEGER | Required | Scrypt work-factor parameter; baseline `65536`. |
+| `kdf_r` | INTEGER | Required | Scrypt block-size parameter; baseline `8`. |
+| `kdf_p` | INTEGER | Required | Scrypt parallelization parameter; baseline `1`. |
 | `kdf_salt` | BLOB | Required | Unique salt for this wrapper. |
 | `encryption_algorithm` | TEXT | Required | Expected value: `aes-256-gcm`. |
 | `nonce` | BLOB | Required | Unique AES-GCM nonce for this wrapper. |
@@ -75,7 +93,10 @@ The app/website name is not stored as a plaintext column. Search decrypts record
 
 ### `schema_migrations`
 
-Tracks database-format migrations without containing user credentials.
+Records schema version without containing user credentials. Current startup
+creates tables if absent, records version 2 if the ledger is empty, and rejects
+a highest recorded version greater than 2. It does not run numbered migrations
+or upgrade an older ledger through a complete version-by-version process.
 
 | Column | Type | Constraints | Purpose |
 |---|---|---|---|
@@ -94,7 +115,13 @@ The plaintext payload exists only transiently before encryption and after authen
 }
 ```
 
-The serialized representation must be canonical and versioned before AES-GCM encryption. The ciphertext is authenticated with associated data containing the vault identifier, entry identifier, record type, and record version.
+Serialization is UTF-8 JSON with sorted keys, compact separators, and
+`ensure_ascii=False`. Entry authenticated data is canonical JSON with
+`format_version` (1), `record_id`, `record_type` (`credential`), and `vault_id`
+(hex). The record version is stored alongside ciphertext, not inserted into
+the credential JSON. A 12-byte nonce and ciphertext (including 16-byte tag)
+are stored separately. Wrapper associated data uses `format_version`, `purpose`
+and hex `vault_id`. Do not alter serialization/context without a compatibility plan.
 
 ## Representative DDL
 
@@ -115,9 +142,9 @@ CREATE TABLE key_wrappers (
     purpose TEXT NOT NULL CHECK (purpose IN ('master', 'recovery')),
     format_version INTEGER NOT NULL,
     kdf_algorithm TEXT NOT NULL,
-    kdf_memory_cost INTEGER NOT NULL,
-    kdf_time_cost INTEGER NOT NULL,
-    kdf_parallelism INTEGER NOT NULL,
+    kdf_n INTEGER NOT NULL,
+    kdf_r INTEGER NOT NULL,
+    kdf_p INTEGER NOT NULL,
     kdf_salt BLOB NOT NULL,
     encryption_algorithm TEXT NOT NULL,
     nonce BLOB NOT NULL,
@@ -153,9 +180,34 @@ CREATE TABLE schema_migrations (
 - Failed transactions must roll back without replacing valid ciphertext.
 - Database writes must not log plaintext payloads.
 
+Schema creation/ledger setup occurs when the database opens, before the later
+vault-initialization transaction. A ledger row can therefore exist without a
+configured vault. User confirmation and authenticated-session validation belong
+to UI/services; SQLite does not itself authenticate callers. Service creation
+uses `uuid.uuid4().hex` IDs; random nonce lengths and supported crypto fields
+are validated by application types. Nonce uniqueness is not a database constraint.
+
 ## Search behavior
 
-Phase one will not maintain a plaintext app-name index. After authentication, the application may decrypt records in memory, compare app/website names, and display matching results. The design favors reduced metadata leakage over database-level plaintext search performance.
+After authentication, the credential service decrypts all vault entries in
+memory and matches trimmed/casefolded substrings of app/website names. Empty
+queries return all entries; results sort by casefolded name then ID. Search
+is linear in vault size, and is repeated on input changes. Username/password
+search and database-level plaintext indexing are not implemented.
+
+## Failure, deletion, and verification limits
+
+Foreign keys are enabled per connection and updates/deletes scope by entry ID
+and vault ID. SQL values use placeholders. Authentication-tag failure prevents
+decrypted records from being returned. Missing wrappers prevent normal unlock
+or recovery. Schema initialization is not a general atomic migration framework.
+SQLite delete is logical removal; no VACUUM/secure-delete or physical-media
+erasure guarantee is provided. Full row rollback/replay and hostile metadata
+changes are not universally prevented by encrypting individual payloads.
+
+See [final results](../testing/final-test-results.md) for local disk/tamper tests
+and outstanding physical/release identity checks. In-memory and source tests do
+not establish every crash/power-loss/migration behavior.
 
 ## Backup boundary
 

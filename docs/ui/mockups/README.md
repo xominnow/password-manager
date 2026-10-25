@@ -13,3 +13,7 @@ The primary editable mockup is [password-manager-mockups.svg](password-manager-m
 
 These mockups are visual design references for the Kivy implementation. They are not final production artwork and use synthetic example data only.
 
+The approved original SVG is preserved unchanged for submission. See the
+[screenshot/mockup evidence index](../SCREENSHOT_EVIDENCE.md) for current
+desktop UI captures and the documented differences from this concept.
+

@@ -10,7 +10,7 @@
 |---|---|---|
 | NFR-SEC-01 | The master password must never be stored in plaintext. | Code review and storage inspection. |
 | NFR-SEC-02 | Vault credentials must be encrypted and authenticated at rest. | Security tests and encrypted-storage inspection. |
-| NFR-SEC-03 | Password-based keys must be derived with the approved Argon2id configuration. | Code review and unit tests. |
+| NFR-SEC-03 | Password-based keys must be derived with the approved Scrypt configuration. | Code review and unit tests. |
 | NFR-SEC-04 | Vault encryption must use AES-256-GCM with unique nonces. | Code review and encryption tests. |
 | NFR-SEC-05 | Recovery must use the one-time high-entropy recovery key and must not use security-question answers. | Functional and code-review evidence. |
 | NFR-SEC-06 | Incorrect authentication attempts must not reveal whether a specific credential or key component was valid. | Negative-path testing. |
@@ -55,7 +55,7 @@
 | NFR-COMP-01 | The APK must target Android 8.0/API 26 or newer unless a documented compatibility constraint is approved. | Build configuration and device test. |
 | NFR-COMP-02 | The app must install and run on the selected physical Android test phone. | Installation evidence. |
 | NFR-COMP-03 | The APK must be buildable from documented Python project instructions. | Clean-build test. |
-| NFR-COMP-04 | Phase-one testing must use private APK distribution rather than hosted password storage. | Deployment review. |
+| NFR-COMP-04 | APK distribution may use the public GitHub Release approved by the user; vault storage remains local with no hosted password service. | Deployment review; public distribution supersedes the original private-sharing plan. |
 
 ## Reliability and data integrity
 
