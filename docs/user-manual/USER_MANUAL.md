@@ -6,9 +6,9 @@ Use test accounts during evaluation; it has not undergone an independent
 production security audit.
 
 Post-release R-01 source update: the Show/Hide buttons for password-entry
-fields described below are implemented on the remediation review branch, not
-in the published `v0.1.0` APK. They require an approved rebuild/install before
-phone use. Existing saved-entry Show/Hide is already part of `v0.1.0`.
+fields described below are implemented and present in the local 0.1.1 test APK,
+not the published `v0.1.0` APK. R-02 installed 0.1.1 on the project phone; user
+workflow results are pending. Existing saved-entry Show/Hide is part of `v0.1.0`.
 
 ## Before you start
 

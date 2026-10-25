@@ -9,7 +9,8 @@ below, additional application changes, or phase-two development.
 Subsequent R-01 decision: the user separately authorized fixing the missing
 password-entry Show/Hide controls. That source remediation and its local
 132-test result are documented in [R-01 evidence](../testing/password-field-visibility.md).
-The source fix is approved; rebuild and phone validation are pending. The original
+The source fix is approved and R-02 has built/installed 0.1.1; user workflow
+validation is pending ([R-02 evidence](../testing/r-02-android-update.md)). The original
 review evidence below remains historical, and `v0.1.0` is unchanged.
 
 ## Conclusion
@@ -109,7 +110,7 @@ functional/non-functional acceptance criteria passed.
 | AC-02 / SEC-AC-05 completeness | Final Android application log review and complete Git-history inspection remain outstanding; local synthetic tests and bounded scans are not universal proof of no leakage |
 | Q-AC-02 / Q-AC-03 | Record loaded search/navigation <=1 second and a usable 100-entry synthetic vault on the test phone |
 | Q-AC-04 independent rebuild | Reproduce from the tagged source using documented instructions on a clean environment; the successful cached WSL rebuild does not meet that stronger evidence standard |
-| R-01 / NFR-USE-03 show/hide coverage | Original review found controls only on saved-entry details. The user authorized and approved the source fix; all six inputs now have locally tested controls. A matching APK rebuild and phone validation remain pending; this is remediation, not a waiver |
+| R-01 / NFR-USE-03 show/hide coverage | Original review found controls only on saved-entry details. The approved source fix is present in the verified/installed 0.1.1 test APK; user-observed phone workflows remain pending. This is remediation, not a waiver |
 | Broader assurance | Other devices/Android versions, novice users, accessibility and independent security/supply-chain testing remain unverified. No every-phone or production-readiness claim is justified |
 
 Q-AC-05 documentation presence is verified by the inventory above. That does not

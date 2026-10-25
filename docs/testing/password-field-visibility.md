@@ -1,9 +1,11 @@
 # R-01: password-entry visibility remediation
 
 Prepared 2026-10-24. Execution authorized by the user's PASSKEY after the final
-submission review. **Source fix approved and locally verified; APK rebuild and
-physical-device verification are separately authorized and remain pending.**
+submission review. **Source fix approved and locally verified; the matching
+APK is installed, with user-observed phone workflow results pending.**
 The user's subsequent PASSKEY approved R-01 completion and merging PR #3.
+R-02 subsequently built and installed matching version 0.1.1; see
+[artifact/device identity and pending user results](r-02-android-update.md).
 
 ## Scope and behavior
 
@@ -72,8 +74,9 @@ not provide secure memory zeroization or repair the skipped keyboard-history iss
 ## Release boundary and phone follow-up
 
 The published `v0.1.0` APK/tag and their checksum are unchanged. **Downloading
-or reinstalling that same asset will not add this fix.** After source approval,
-an authorized rebuild/install step is needed. Do not replace an immutable
+or reinstalling that same asset will not add this fix.** R-02 has built and
+installed the separate 0.1.1 local test APK; user workflow results remain pending.
+Do not replace an immutable
 historical asset or move its tag to imply these changes were already tested.
 
 When a matching new APK is available, record its source commit, filename/hash,

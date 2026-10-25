@@ -214,7 +214,7 @@ commands in [deployment instructions](../release/installation-and-deployment.md)
 or the [remediation rebuild guide](../testing/defect-remediation.md).
 
 The WSL build environment uses Buildozer, Java 17, Rust/Cargo and Android SDK/NDK
-tooling. `buildozer.spec` sets version 0.1.0, package `com.xominnow.lockbox`,
+tooling. `buildozer.spec` sets test-build version 0.1.1, package `com.xominnow.lockbox`,
 API minimum 26, ARM64/ARMv7 targets, and python-for-android `develop` revision
 `0382d27`. No Internet permission is requested. Native code compilation and
 toolchain downloads occur on the development machine.

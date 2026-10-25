@@ -4,6 +4,12 @@ Related checklist tasks: 7.6, 9.5. Updated 2026-10-24 for public test-APK
 distribution. These are repeat-build instructions for the configured project
 machine, plus end-user installation instructions. No server deployment is required.
 
+R-02 update: the current source build version is 0.1.1, a local test APK already
+installed on the project phone. The GitHub download below remains the unchanged
+0.1.0 release and does not include R-01's extra input visibility controls.
+See [0.1.1 build/install evidence](../testing/r-02-android-update.md); user workflow
+results are pending, and no new public release has been published.
+
 ## Download and install without a development environment
 
 1. Open the [snapshot release](https://github.com/xominnow/password-manager/releases/tag/v0.1.0)
@@ -81,7 +87,7 @@ buildozer android debug
 Proceed only after the build succeeds and reports the generated APK. Expected output for the current version and architectures:
 
 ```text
-/home/xomin/password-manager/bin/lockbox-0.1.0-arm64-v8a_armeabi-v7a-debug.apk
+/home/xomin/password-manager/bin/lockbox-0.1.1-arm64-v8a_armeabi-v7a-debug.apk
 ```
 
 If version/architecture configuration changes, use the actual new output
@@ -96,7 +102,7 @@ Run in Windows PowerShell with the phone connected and unlocked:
 
 ```powershell
 adb devices
-adb install -r "\\wsl$\Ubuntu\home\xomin\password-manager\bin\lockbox-0.1.0-arm64-v8a_armeabi-v7a-debug.apk"
+adb install -r "\\wsl$\Ubuntu\home\xomin\password-manager\bin\lockbox-0.1.1-arm64-v8a_armeabi-v7a-debug.apk"
 adb shell am force-stop com.xominnow.lockbox
 adb shell am start -W -n com.xominnow.lockbox/org.kivy.android.PythonActivity
 ```
@@ -125,7 +131,7 @@ is separate from this documented Windows-ADB workflow.
 Compute SHA-256 on the actual built file in Windows PowerShell:
 
 ```powershell
-Get-FileHash -LiteralPath '\\wsl$\Ubuntu\home\xomin\password-manager\bin\lockbox-0.1.0-arm64-v8a_armeabi-v7a-debug.apk' -Algorithm SHA256
+Get-FileHash -LiteralPath '\\wsl$\Ubuntu\home\xomin\password-manager\bin\lockbox-0.1.1-arm64-v8a_armeabi-v7a-debug.apk' -Algorithm SHA256
 ```
 
 After downloading the release, compute its checksum too:
@@ -134,10 +140,11 @@ After downloading the release, compute its checksum too:
 Get-FileHash -LiteralPath "$env:USERPROFILE\Downloads\lockbox-0.1.0-arm64-v8a_armeabi-v7a-debug.apk" -Algorithm SHA256
 ```
 
-Compare against the checksum of the artifact actually uploaded, not a later
-local rebuild. Equal hashes establish identical bytes, not independent safety
-or a match to source. Record actual values; no final SHA-256 is supplied here
-because the current release/build equivalence has not been established.
+Compare against the checksum for the exact artifact, not a later local rebuild.
+The public 0.1.0 download must match its [snapshot checksum](final-source-snapshot.md);
+the local 0.1.1 APK must match [R-02's checksum](../testing/r-02-SHA256SUMS.txt).
+They are different builds and should not hash alike. Equal hashes establish
+identical bytes, not independent safety or proof of source equivalence by themselves.
 
 ## Device validation
 
