@@ -33,6 +33,8 @@ dist/
 *.sqlite3
 
 # IDE and operating-system files
+# Microsoft Office owner/lock files; leave open user documents untouched.
+~$*
 .idea/
 .vscode/
 *.code-workspace

@@ -34,6 +34,9 @@ recorded in the [snapshot record](docs/release/final-source-snapshot.md).
 Post-release R-01 source adds Show/Hide to password-entry fields. This fix is
 not in the linked APK; reinstalling that same asset will not add the controls.
 See [remediation evidence and release status](docs/testing/password-field-visibility.md).
+A separate **0.1.1 local test APK** has been built and installed on the project
+phone; user workflow results are pending. It is not published at the download
+link above. See [build/device evidence](docs/testing/r-02-android-update.md).
 The rebuilt snapshot APK still needs a fresh phone smoke test; earlier phone
 results do not establish this artifact's installed behavior. See the
 [deployment guide](docs/release/installation-and-deployment.md) for updates.
@@ -135,7 +138,7 @@ execution evidence is recorded separately from local results in the snapshot rec
   wider accessibility/device testing and independent clean-build reproduction retain gaps.
 - No independent security/supply-chain audit or production signing has been completed.
 - The published APK lacks R-01's password-entry Show/Hide controls. The source
-  fix is approved and locally tested; a matching rebuild and phone validation are pending.
+  fix is approved and the matching local 0.1.1 test APK is installed; phone workflow results are pending.
 
 See the [complete limitation register](docs/release/known-limitations.md).
 

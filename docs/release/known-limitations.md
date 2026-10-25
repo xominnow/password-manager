@@ -38,7 +38,7 @@ separate final phone results.
 | KL-11 | KDF cost upper bounds incomplete | Minimum Scrypt costs are checked; malicious stored cost values can still cause excessive resource use |
 | KL-12 | No complete numbered migration engine | A schema ledger and future-version rejection exist; arbitrary older schemas are not automatically upgraded by tested transformations |
 | KL-13 | Trust in OS, dependencies and installer | Rooted/compromised-device, privileged-malware, external-camera and forensic resistance are not established; no independent supply-chain audit |
-| KL-14 | Published v0.1.0 has Show/Hide only on saved-entry details | R-01 source remediation is approved and adds locally tested controls to all six password inputs. A matching APK rebuild/phone check remains pending; the published asset is unchanged. See [R-01 evidence](../testing/password-field-visibility.md) |
+| KL-14 | Published v0.1.0 has Show/Hide only on saved-entry details | R-01 source fix is approved; matching 0.1.1 is built and installed locally. User-observed phone results remain pending and the public asset is unchanged. See [R-01](../testing/password-field-visibility.md) and [R-02](../testing/r-02-android-update.md) |
 
 Documenting these constraints does not approve new requirements waivers. Only
 the clipboard-history remediation was explicitly skipped.

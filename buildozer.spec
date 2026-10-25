@@ -13,7 +13,7 @@ source.include_exts = py,kv,atlas,png,jpg,jpeg,svg,json
 source.exclude_dirs = .git,.github,.venv,.venv313,docs,tests,scripts,bin,build,dist,.pytest_cache
 
 # (str) Application version
-version = 0.1.0
+version = 0.1.1
 
 # (str) Application entry point
 entrypoint = main.py
