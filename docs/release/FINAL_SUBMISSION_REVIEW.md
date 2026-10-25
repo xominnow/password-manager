@@ -1,6 +1,10 @@
 # Final submission review
 
-Task 9.10 — reviewed 2026-10-24. **Review prepared; completion approval pending.**
+Task 9.10 — reviewed 2026-10-24. **Review approved; product acceptance gaps remain open.**
+
+The user approved completion of this review and merging PR #2 by replying
+`Passkey`. This approves the review task, not a waiver of the open conditions
+below, additional application changes, or phase-two development.
 
 ## Conclusion
 
@@ -110,7 +114,8 @@ explicitly skipped; accepting this review does not implicitly waive the rest.
 
 - Checked 6.4–6.10 and 6.12 to match their already-recorded completion evidence
   and prior PASSKEY approvals; task 9.9 is checked under the latest PASSKEY.
-- Kept task 9.10 unchecked until completion approval; phase-two items remain unchecked.
+- Kept task 9.10 unchecked until completion approval, then checked it under the
+  user's approval; phase-two items remain unchecked.
 - Labeled the scope baseline as historical and identified superseded Argon2id,
   private distribution and recovery wording. Current implementation uses Scrypt,
   public debug distribution and a reusable 16-character recovery key.
@@ -138,6 +143,6 @@ The recorded submission deadline was **2026-10-21**; this review is dated
 submission on the user's behalf is implied or performed. Additional instructor
 formatting/rubric requirements have not been supplied.
 
-The user may approve the completed review task with PASSKEY. Product acceptance
-with outstanding mandatory checks requires explicit decisions/results, not a
-generic assumption from that approval. No phase-two task starts automatically.
+The user approved the completed review task. Product acceptance with outstanding
+mandatory checks still requires explicit decisions/results, not a generic
+assumption from that approval. No phase-two task starts automatically.

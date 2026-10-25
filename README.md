@@ -163,8 +163,8 @@ See the [complete limitation register](docs/release/known-limitations.md).
 - [PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md): authoritative gated progress log.
 
 Tasks are marked complete only after evidence and the user's PASSKEY approval.
-The source snapshot/tag is approved and merged. The final review is a separate
-checklist task; its approval does not waive outstanding acceptance checks.
+The source snapshot/tag and final review are approved. Review approval does not
+waive outstanding acceptance checks or authorize phase-two development.
 Do not commit real credentials, recovery keys, vault files, signing keys or tokens.
 Synthetic fixture strings are public demonstration data, not personal secrets.
 See [contributing guidance](CONTRIBUTING.md).

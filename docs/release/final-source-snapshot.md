@@ -4,7 +4,7 @@ Task 9.9, prepared 2026-10-24. Release target: `v0.1.0`; application version
 remains `0.1.0`. This is a capstone prototype/debug pre-release, not a
 production-security certification. The user approved task 9.9 with PASSKEY;
 PR #1 was merged as `e3b691c7958a916b057d081168b912c49fe31cdd`.
-Task 9.10 final review is documented separately and still needs completion approval.
+Task 9.10 final review is documented separately and approved, with acceptance gaps open.
 This post-tag documentation update does not change the immutable tag or APK.
 
 ## Source and release identity
