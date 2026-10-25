@@ -1,7 +1,7 @@
 # Final test results — capstone test cycle
 
 Post-review R-01 supplement: user-authorized password-input visibility controls
-are implemented in source. Final full local suite: **132 passed in 36.27s**, including
+are implemented in source. Latest full local suite: **132 passed in 33.36s**, including
 25 new cases; pip check and compileall passed. This source differs from the
 immutable `v0.1.0` APK in UI behavior and tests only; no rebuild or physical
 retest is claimed. See [R-01 evidence](password-field-visibility.md).

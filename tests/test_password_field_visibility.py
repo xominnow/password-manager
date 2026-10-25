@@ -184,11 +184,15 @@ def test_visibility_toggle_counts_as_activity_without_changing_lock_duration(she
     controller.setup(MASTER)
     controller.login(MASTER)
     manager.current = Routes.ENTRY
-    now = [controller.auto_lock._last_activity + 110]
+    # Exact clock values avoid cancellation at the 120-second float boundary.
+    now = [1000.0]
     controller.auto_lock._clock = lambda: now[0]
+    controller.auto_lock.record_activity()
+    now[0] += 110
     entry = manager.get_screen(Routes.ENTRY)
     entry._password_toggles[entry.password].dispatch("on_release")
     assert controller.auto_lock._last_activity == now[0]
+    assert controller.auto_lock.timeout_seconds == 120
     now[0] += 119
     assert not controller.check_auto_lock()
     now[0] += 1

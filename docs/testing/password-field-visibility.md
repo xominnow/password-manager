@@ -43,11 +43,13 @@ not provide secure memory zeroization or repair the skipped keyboard-history iss
 
 - Windows `.venv313`, Python 3.13.17, Kivy 2.3.1; in-memory synthetic test vaults
   and fake clipboard adapters, not personal data or the system clipboard.
-- Final full suite: **132 passed in 36.27 seconds**. This is the prior 107 cases plus
+- Latest full suite after the deterministic-clock correction: **132 passed in
+  33.36 seconds**. This is the prior 107 cases plus
   25 new cases in `tests/test_password_field_visibility.py`, not 132 additional
   cases. Pip consistency and compileall passed.
 - An initial full run also passed the same 132 cases in 32.34 seconds before a
-  label-callback readability cleanup; the final run above covers that cleanup.
+  label-callback readability cleanup; a subsequent run passed in 36.27 seconds.
+  The latest run above covers both that cleanup and the clock correction.
 - The earlier targeted run was 25 passed in 7.65 seconds: an initial 20-case
   visibility set plus five existing UI regressions. It overlaps the full run.
 - New cases cover all six independent toggles, unchanged text, labels/fonts,
@@ -60,6 +62,12 @@ not provide secure memory zeroization or repair the skipped keyboard-history iss
   approved mockup or historical task 9.7 screenshots.
 - Remote CI results are recorded separately in the checklist/PR when available.
   Local success is not a substitute for physical Android rendering tests.
+- A subsequent approval-commit CI run found one flaky exact-boundary timer
+  test (131 passed, one failed). Its fake clock had been seeded from fractional
+  real monotonic time. The test now uses explicit exact clock values to verify
+  119 seconds remains unlocked and 120 locks, while retaining the production
+  120-second setting. No application timeout or security behavior was changed.
+  Rerun evidence is recorded in the checklist; the failed run is not a pass.
 
 ## Release boundary and phone follow-up
 

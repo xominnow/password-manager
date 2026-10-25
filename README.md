@@ -108,7 +108,7 @@ $testTemp = Join-Path '.pytest_cache' ('run-' + [guid]::NewGuid().ToString('N'))
 .\.venv313\Scripts\python.exe -m pytest -q --basetemp $testTemp
 ```
 
-Latest full recorded local run: **132 passed in 36.27 seconds**, including the
+Latest full recorded local run: **132 passed in 33.36 seconds**, including the
 25 new R-01 visibility regressions. Dependency consistency and compilation passed.
 Earlier targeted runs overlap; they are not additional distinct tests.
 
