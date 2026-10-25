@@ -11,7 +11,17 @@ Historical artifact gaps below describe the phase-eight cycle; this new APK
 still needs a fresh physical-device smoke test. Earlier phone reports are not
 retroactively attributed to the new hash.
 
-## Environment and artifact identity
+Task 9.10 review: all requested documentation categories are present; see the
+[final submission inventory](../release/FINAL_SUBMISSION_REVIEW.md) for current
+artifact identity, acceptance conditions and sign-off boundaries. Historical
+phase-eight artifact gaps below are superseded only where subsequent evidence
+is explicitly recorded, not by blanket task approval.
+The task 9.10 repeat full suite passed 107 tests in 26.69s, with pip check and
+compileall passing. Source review also found R-01: password-input fields lack
+show/hide controls outside saved-entry details (partial NFR-USE-03); the passing
+automated suite does not cover or resolve that requirement gap.
+
+## Phase-eight environment and artifact identity (historical)
 
 - Local automated tests: Windows, project `.venv313`, Python 3.13.17.
 - Source: modified working tree based on commit
@@ -27,7 +37,7 @@ retroactively attributed to the new hash.
   user reports on their installed builds; the agent did not independently
   inspect each installed APK identity.
 
-## Automated execution
+## Phase-eight automated execution (historical; task 9.9 supplement above)
 
 | Stage | Result | Scope |
 |---|---|---|
@@ -97,18 +107,18 @@ equivalent result on every Android device or the published APK.
 | AC-17,18 | Pass | Manual lock, two-minute inactivity and reset behavior user-reported Pass |
 | AC-19 | Pass | User reports capture/recording blocked; secure-window adapter regressions pass |
 | AC-20 | Pass | Physical install and app usage reported; no sensitive screenshots collected |
-| AC-21 | Partial | Offline flows Pass; source requests no Internet permission and historical manifest check passed, final release manifest not re-extracted |
+| AC-21 | Pass with artifact qualification | Earlier offline flows Pass; task 9.9 final APK manifest re-extracted with no requested permissions. Fresh hashed-APK phone offline smoke test remains outstanding |
 | SEC-AC-01 | Pass locally | AES-GCM/storage tests and synthetic closed-database scan pass |
 | SEC-AC-02 | Pass locally | Scrypt parameter validation/review/tests |
 | SEC-AC-03 | Pass locally | Fresh random nonce generation reviewed/tested; no universal nonce-uniqueness proof |
 | SEC-AC-04 | Pass locally | Independent master/recovery wrappers reviewed/tested |
-| SEC-AC-05 | Partial | Captured local logs and bounded working-file secret scan pass; Android logs/full repository history/public source identity unverified |
+| SEC-AC-05 | Partial | Local logs and bounded working-file secret scans pass; task 9.9 public source identity verified. Final Android logs/full repository history remain unverified |
 | SEC-AC-06 | Pass locally | Invalid ciphertext/tag/context rejection tests |
 | Q-AC-01 | Pass, user-reported | Startup <5 seconds; exact sample/repeats not recorded |
 | Q-AC-02 | Not run | <=1-second loaded navigation/search timing unreported |
 | Q-AC-03 | Not run | 100-entry device load test unexecuted |
 | Q-AC-04 | Partial | Successful project builds/installations and instructions exist; independent clean rebuild from final committed snapshot not verified |
-| Q-AC-05 | Pending phase 9 | Final manuals/technical docs/limitations and submission package review remain |
+| Q-AC-05 | Pass for document presence | Task 9.10 inventory verifies manuals, technical/deployment/test/limitation documentation. User sign-off on the review remains separate |
 
 ## Remaining limits and release conclusion
 
@@ -120,9 +130,11 @@ have not thereby been approved as requirement waivers.
 
 Additional unverified areas include independent novice-user testing,
 screen-reader support, smaller screens/other Android versions, new-device
-release installation, downloaded APK checksum comparison, post-reinstall
+release installation, post-reinstall
 recovery, dependency vulnerability auditing, and independent penetration testing.
 Do not replace these with inferred passes or claim all Android phones tested.
+The downloaded APK checksum gap was closed in task 9.9; independent clean-build
+reproduction and a fresh physical test of that APK remain open.
 
 No real credentials, recovery keys, vault files, signing keys, or private
 download credentials belong in the submission evidence. The final source/APK

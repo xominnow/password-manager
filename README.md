@@ -104,7 +104,7 @@ $testTemp = Join-Path '.pytest_cache' ('run-' + [guid]::NewGuid().ToString('N'))
 .\.venv313\Scripts\python.exe -m pytest -q --basetemp $testTemp
 ```
 
-Latest full recorded local run: **107 passed in 26.51 seconds**, including the
+Latest full recorded local run: **107 passed in 26.69 seconds**, including the
 final keyboard-mode adjustment. Dependency consistency and compilation passed.
 Earlier targeted runs overlap; they are not additional distinct tests.
 
@@ -130,6 +130,8 @@ execution evidence is recorded separately from local results in the snapshot rec
 - Fresh-setup confirmation on the rebuilt phone package, 100-entry performance,
   wider accessibility/device testing and independent clean-build reproduction retain gaps.
 - No independent security/supply-chain audit or production signing has been completed.
+- Show/hide is available on saved-entry details, not other password-input fields;
+  the final review records this as a partial usability requirement.
 
 See the [complete limitation register](docs/release/known-limitations.md).
 
@@ -147,6 +149,7 @@ See the [complete limitation register](docs/release/known-limitations.md).
 | Testing | [Plan](docs/testing/test-plan.md), [results](docs/testing/final-test-results.md) |
 | Deployment | [Build/install/update guide](docs/release/installation-and-deployment.md), [GitHub releases](docs/release/github-release.md) |
 | Source snapshot and APK identity | [Release record](docs/release/final-source-snapshot.md) |
+| Final submission review | [Deliverable inventory and outstanding acceptance checks](docs/release/FINAL_SUBMISSION_REVIEW.md) |
 | Known limitations | [Limitation register](docs/release/known-limitations.md) |
 
 ## Repository map and project control
@@ -160,7 +163,8 @@ See the [complete limitation register](docs/release/known-limitations.md).
 - [PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md): authoritative gated progress log.
 
 Tasks are marked complete only after evidence and the user's PASSKEY approval.
-Final source snapshot/tag and submission review remain separate checklist tasks.
+The source snapshot/tag and final review are approved. Review approval does not
+waive outstanding acceptance checks or authorize phase-two development.
 Do not commit real credentials, recovery keys, vault files, signing keys or tokens.
 Synthetic fixture strings are public demonstration data, not personal secrets.
 See [contributing guidance](CONTRIBUTING.md).

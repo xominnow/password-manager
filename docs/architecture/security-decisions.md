@@ -16,9 +16,11 @@ app storage isolation, the installed APK and dependencies. A rooted/compromised
 device is outside the tested protection target. No cloud or export backup exists;
 deleted app data or lost devices can mean permanent data loss.
 
-Evidence: source/build configuration, historical manifest inspection, user-reported
-airplane-mode operation and public HTTP asset availability. The latest APK/source
-checksum pair has not been verified or published as a final snapshot.
+Evidence: source/build configuration, user-reported airplane-mode operation and
+the [v0.1.0 snapshot record](../release/final-source-snapshot.md). Task 9.9
+verified the rebuilt manifest/signature, all 25 application bytecode/source
+matches, full public APK download checksum and all 157 tagged source ZIP files.
+The rebuilt APK still needs a fresh physical-phone smoke test.
 
 ## SD-02: established cryptography, Scrypt key derivation
 

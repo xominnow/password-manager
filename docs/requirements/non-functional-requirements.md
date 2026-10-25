@@ -2,7 +2,11 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 1.2
-**Status:** Draft for review
+**Status:** Approved baseline; final verification qualifications in the submission review
+
+Final review R-01: NFR-USE-03 is only partially implemented. Saved-credential
+details have Show/Hide; setup/login/new-master and credential-edit password
+inputs do not. This observation does not amend or waive the requirement.
 
 ## Security
 
@@ -17,7 +21,7 @@
 | NFR-SEC-07 | Sensitive values must be masked by default in the interface. | Manual UI testing. |
 | NFR-SEC-08 | Screenshots and screen recording must be blocked on sensitive screens. | Physical-device testing. |
 | NFR-SEC-09 | The app must request no Internet permission and must not require network connectivity. | Manifest inspection and offline testing. |
-| NFR-SEC-10 | Test data, recovery keys, signing keys, and real credentials must never be committed to GitHub. | Repository and secret scan. |
+| NFR-SEC-10 | Real credentials, live recovery keys, private signing keys and personal vault data must never be committed to GitHub. Public, clearly synthetic test fixtures and mockup examples are allowed. | Repository and secret scan; fixture provenance. |
 
 ## Session and privacy
 

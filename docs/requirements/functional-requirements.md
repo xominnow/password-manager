@@ -2,7 +2,26 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 1.1
-**Status:** Draft for review
+**Status:** Approved baseline; implementation qualifications recorded below
+
+## Final implementation qualifications
+
+This baseline states intended behavior. Task 9.10 found these differences;
+they are documented, not silently treated as requirement passes:
+
+- In UC-01, vault storage is initialized before the recovery-save acknowledgement.
+  That acknowledgement gates ordinary navigation only; it is not persisted
+  across process termination. After acknowledgement, the app returns to login
+  instead of opening an authenticated vault automatically.
+- "One-time recovery key" means generated/displayed once at setup, not usable
+  for only one reset. The same key remains valid; rotation is not implemented.
+- UC-05's generator has **Use password**, not a direct copy action. Apply it to
+  the entry, save, open details, reveal, then explicitly copy. Clipboard expiry
+  is best effort; keyboard-history retention is an approved skipped fix.
+
+The [user manual](../user-manual/USER_MANUAL.md) describes the actual workflow;
+the [final review](../release/FINAL_SUBMISSION_REVIEW.md) records open evidence
+and acceptance decisions. No application changes were made by this review.
 
 ## Primary actor
 
