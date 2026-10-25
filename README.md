@@ -31,6 +31,9 @@ permanently delete the vault; a recovery key cannot restore deleted data.
 The `v0.1.0` snapshot is a **debug test build**, separate from the unchanged
 historical `Lockbox_V0.1.0` release. Its source/package checks and SHA-256 are
 recorded in the [snapshot record](docs/release/final-source-snapshot.md).
+Post-release R-01 source adds Show/Hide to password-entry fields. This fix is
+not in the linked APK; reinstalling that same asset will not add the controls.
+See [remediation evidence and release status](docs/testing/password-field-visibility.md).
 The rebuilt snapshot APK still needs a fresh phone smoke test; earlier phone
 results do not establish this artifact's installed behavior. See the
 [deployment guide](docs/release/installation-and-deployment.md) for updates.
@@ -58,6 +61,7 @@ master/recovery wrappers and AES-256-GCM. See [security decisions](docs/architec
 
 Synthetic **desktop Kivy captures**, not Android-device screenshots. The evidence
 harness uses dummy data and a white presentation canvas; device appearance may differ.
+These preserved images predate R-01's extra password-entry Show/Hide buttons.
 
 <img src="docs/ui/screenshots/03-login0001.png" width="220" alt="Synthetic desktop Lockbox login screen">
 <img src="docs/ui/screenshots/04-vault0001.png" width="220" alt="Synthetic desktop Lockbox vault list with dummy entries">
@@ -104,8 +108,8 @@ $testTemp = Join-Path '.pytest_cache' ('run-' + [guid]::NewGuid().ToString('N'))
 .\.venv313\Scripts\python.exe -m pytest -q --basetemp $testTemp
 ```
 
-Latest full recorded local run: **107 passed in 26.69 seconds**, including the
-final keyboard-mode adjustment. Dependency consistency and compilation passed.
+Latest full recorded local run: **132 passed in 36.27 seconds**, including the
+25 new R-01 visibility regressions. Dependency consistency and compilation passed.
 Earlier targeted runs overlap; they are not additional distinct tests.
 
 User-reported phone results cover core workflows, offline use, locking, recovery,
@@ -130,8 +134,8 @@ execution evidence is recorded separately from local results in the snapshot rec
 - Fresh-setup confirmation on the rebuilt phone package, 100-entry performance,
   wider accessibility/device testing and independent clean-build reproduction retain gaps.
 - No independent security/supply-chain audit or production signing has been completed.
-- Show/hide is available on saved-entry details, not other password-input fields;
-  the final review records this as a partial usability requirement.
+- The published APK lacks R-01's password-entry Show/Hide controls. The source
+  fix is locally tested but awaits approval, rebuild and phone validation.
 
 See the [complete limitation register](docs/release/known-limitations.md).
 

@@ -38,7 +38,7 @@ separate final phone results.
 | KL-11 | KDF cost upper bounds incomplete | Minimum Scrypt costs are checked; malicious stored cost values can still cause excessive resource use |
 | KL-12 | No complete numbered migration engine | A schema ledger and future-version rejection exist; arbitrary older schemas are not automatically upgraded by tested transformations |
 | KL-13 | Trust in OS, dependencies and installer | Rooted/compromised-device, privileged-malware, external-camera and forensic resistance are not established; no independent supply-chain audit |
-| KL-14 | Show/hide is limited to saved-credential details | Setup/login/new-master and credential-edit password inputs stay masked without a toggle. Final review R-01 identifies partial NFR-USE-03 implementation; no waiver or fix is approved |
+| KL-14 | Published v0.1.0 has Show/Hide only on saved-entry details | R-01 source remediation adds controls to all six password inputs and passes local tests. Completion approval, merge and a matching APK rebuild/phone check remain pending; the published asset is unchanged. See [R-01 evidence](../testing/password-field-visibility.md) |
 
 Documenting these constraints does not approve new requirements waivers. Only
 the clipboard-history remediation was explicitly skipped.

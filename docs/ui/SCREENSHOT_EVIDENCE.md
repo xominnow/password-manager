@@ -2,6 +2,11 @@
 
 Task 9.7, prepared 2026-10-24.
 
+These preserved captures predate the post-review R-01 password-input Show/Hide
+controls. They illustrate the v0.1.0-era layout, not the latest remediation UI.
+R-01 desktop preview checks and release status are documented
+[separately](../testing/password-field-visibility.md); the original assets are unchanged.
+
 ## Approved custom mockups
 
 [Original six-screen editable SVG](mockups/password-manager-mockups.svg)
@@ -17,7 +22,7 @@ It is a concept design, not an Android screenshot or pixel-identical final UI.
 | Compact typography and fixed concept layout | Current code uses larger sp sizes, dynamic wrapping and scrollable forms |
 | Clipboard clears after 30 seconds | Best-effort active-clipboard clearing; keyboard history may retain copies |
 
-## Current UI screenshot set
+## Task 9.7 UI screenshot set (before R-01)
 
 These are **staged desktop Kivy widget captures**, not Android-device images.
 They use the real current screen classes with an in-memory database and dummy

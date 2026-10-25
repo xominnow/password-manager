@@ -4,9 +4,12 @@
 **Related checklist task:** 1.2
 **Status:** Approved baseline; final verification qualifications in the submission review
 
-Final review R-01: NFR-USE-03 is only partially implemented. Saved-credential
-details have Show/Hide; setup/login/new-master and credential-edit password
-inputs do not. This observation does not amend or waive the requirement.
+Final review R-01 found NFR-USE-03 partially implemented in `v0.1.0`.
+The user authorized remediation: Show/Hide is now implemented for all six
+password inputs in source and passes local regression tests, in addition to
+saved-entry details. Completion approval and matching APK/phone verification
+remain pending; see [R-01 evidence](../testing/password-field-visibility.md).
+This is not a waiver or a claim that the published APK already has the fix.
 
 ## Security
 
