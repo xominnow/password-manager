@@ -104,6 +104,7 @@ class BaseScreen(Screen):
         self.status_label = None
         self.scroll = None
         self._inputs = []
+        self._password_toggles = {}
 
     def content(self, title, subtitle=None):
         root = GridLayout(
@@ -147,14 +148,41 @@ class BaseScreen(Screen):
             self.scroll.bind(height=lambda *_: Clock.schedule_once(lambda _: self.scroll.scroll_to(widget, padding=dp(16)) if widget.focus else None, 0.1))
         return widget
 
+    def add_password_input(self, root, hint_text, *, label="password"):
+        """Add a masked field with its own explicit, consistently styled toggle."""
+        field = self.track_input(password_input(hint_text))
+        button = secondary_button(
+            f"Show {label}", partial(self.toggle_password_visibility, field)
+        )
+
+        def update_caption(_field, masked):
+            button.text = f"{'Show' if masked else 'Hide'} {label}"
+
+        field.bind(password=update_caption)
+        self._password_toggles[field] = button
+        root.add_widget(field)
+        root.add_widget(button)
+        return field
+
+    def toggle_password_visibility(self, field, *_args):
+        """Change display masking only; do not copy, store or alter the value."""
+        self.track_activity(None, None)
+        field.password = not field.password
+
+    def reset_password_visibility(self):
+        for field in self._password_toggles:
+            field.password = True
+
     def clear_sensitive(self):
         """Drop screen-held values; this does not promise memory zeroization."""
+        self.reset_password_visibility()
         for widget in self._inputs:
             widget.focus = False
             widget.text = ""
         self.status("")
 
     def on_pre_leave(self, *_args):
+        self.reset_password_visibility()
         # Preserve an unsaved credential only during its generator round trip.
         if self.name == Routes.ENTRY and self.manager.current == Routes.GENERATOR:
             for widget in self._inputs:
@@ -176,11 +204,9 @@ class SetupScreen(BaseScreen):
         self.recovery_saved = False
         root = self.content("Create your vault", "Your vault stays encrypted on this device.")
         root.add_widget(styled_label("Master password", bold=True))
-        self.master = self.track_input(password_input("At least 8 characters"))
-        root.add_widget(self.master)
+        self.master = self.add_password_input(root, "At least 8 characters", label="master password")
         root.add_widget(styled_label("Confirm master password", bold=True))
-        self.confirm = self.track_input(password_input("Re-enter your master password"))
-        root.add_widget(self.confirm)
+        self.confirm = self.add_password_input(root, "Re-enter your master password", label="confirmation")
         self.recovery_label = styled_label("", color=GREEN, height=70)
         root.add_widget(self.recovery_label)
         self.copy_recovery_button = secondary_button("Copy recovery key", self.copy_recovery_key)
@@ -204,6 +230,7 @@ class SetupScreen(BaseScreen):
             self.status("Vault setup failed. Check the password requirements.", error=True)
             return
         self.recovery_key = recovery_key
+        self.reset_password_visibility()
         self.master.text = ""
         self.confirm.text = ""
         self.recovery_label.text = f"Save this recovery key now:\n{recovery_key}"
@@ -250,8 +277,7 @@ class LoginScreen(BaseScreen):
         super().__init__(**kwargs)
         root = self.content("Welcome back", "Unlock your local vault")
         root.add_widget(styled_label("Master password", bold=True))
-        self.master = self.track_input(password_input("Enter your master password"))
-        root.add_widget(self.master)
+        self.master = self.add_password_input(root, "Enter your master password", label="master password")
         root.add_widget(primary_button("Unlock vault", self.login))
         root.add_widget(secondary_button("Forgot master password?", partial(self.go_to, Routes.RECOVERY)))
         root.add_widget(secondary_button("Create a new vault", partial(self.go_to, Routes.SETUP)))
@@ -298,11 +324,9 @@ class NewMasterScreen(BaseScreen):
         self.recovery_key = ""
         root = self.content("Create a new master password", "Choose a password you can remember and protect.")
         root.add_widget(styled_label("New master password", bold=True))
-        self.master = self.track_input(password_input("Enter a new master password"))
-        root.add_widget(self.master)
+        self.master = self.add_password_input(root, "Enter a new master password", label="new master password")
         root.add_widget(styled_label("Confirm new master password", bold=True))
-        self.confirm = self.track_input(password_input("Re-enter the new master password"))
-        root.add_widget(self.confirm)
+        self.confirm = self.add_password_input(root, "Re-enter the new master password", label="confirmation")
         root.add_widget(primary_button("Reset password", self.reset_password))
         root.add_widget(secondary_button("Back to login", partial(self.go_to, Routes.LOGIN)))
         self.add_status(root)
@@ -399,9 +423,8 @@ class EntryScreen(BaseScreen):
         self.username = self.track_input(TextInput(hint_text="demo-user", font_size=BODY_FONT_SIZE, multiline=False, size_hint_y=None, height=dp(44)))
         root.add_widget(self.username)
         root.add_widget(styled_label("Password", bold=True))
-        self.password = self.track_input(password_input("Enter or generate a password"))
+        self.password = self.add_password_input(root, "Enter or generate a password")
         self.password.bind(text=self.update_strength)
-        root.add_widget(self.password)
         self.strength = styled_label("Strength feedback will appear here.", font_size=CAPTION_FONT_SIZE, color=MUTED, height=46)
         root.add_widget(self.strength)
         root.add_widget(secondary_button("Generate strong password", self.open_generator))

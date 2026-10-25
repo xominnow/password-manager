@@ -75,6 +75,7 @@ syntax checks passed after those changes. Rerun against the final source in 8.2.
 | M10 | Manually lock and verify reauthentication; idle for 120 seconds and verify lock; activity before expiry resets timer | AC-17,18 |
 | M11 | Recovery with valid key resets master and preserves an existing entry; old master fails and new master succeeds; incorrect/case-changed new-format key fails without modification | AC-06,07 |
 | M12 | Repeat setup/login and credential workflows in airplane mode | AC-21 |
+| M13 (R-01) | On the matching rebuilt APK, test each setup/login/new-master/credential password-field Show/Hide independently; verify unchanged text, masked defaults, masking on navigation/manual/auto-lock and generator apply/cancel, and access with keyboard/enlarged fonts | NFR-USE-03; [R-01 detailed cases](password-field-visibility.md) |
 
 User previously reported eight grouped workflow checks passed and confirmed the
 revised app runs as expected. Preserve this as user-reported evidence, but do

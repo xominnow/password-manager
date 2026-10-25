@@ -4,7 +4,7 @@
 **Owner:** Samantha Loder
 **Repository:** https://github.com/xominnow/password-manager
 **Deadline:** October 21, 2026
-**Status:** Phase-one task reviews approved; product acceptance gaps remain open; phase two deferred
+**Status:** R-01 source fix approved; APK rebuild/phone verification authorized; acceptance gaps open; phase two deferred
 
 ## Completion protocol
 
@@ -129,6 +129,10 @@
 - [x] 9.9 Create a release tag and final source snapshot.
 - [x] 9.10 Perform the final submission review.
 
+## Post-review remediation
+
+- [x] R-01 Add Show/Hide controls to remaining password-entry fields, verify masking/cleanup and update documentation. Source fix approved; matching APK build and phone verification remain separate steps.
+
 ## Phase 10 — Phase-two backlog
 
 - [ ] 10.1 Biometric unlock.
@@ -231,3 +235,6 @@
 | 2026-10-24 | Checklist reconciliation | Corrected | Marked 6.4–6.10 and 6.12 checked to match their existing completion evidence and recorded PASSKEY approvals. This corrects tracker inconsistency; it does not waive clipboard limitations or missing acceptance evidence | Yes — prior task-specific approvals recorded above |
 | 2026-10-24 | 9.10 | Complete | [Final review](docs/release/FINAL_SUBMISSION_REVIEW.md) inventories all required deliverable categories; 20 entry files present/nonempty, 73 Markdown docs with no broken local links/unbalanced fences, valid SVG and nine decoded 600x1300 PNGs. Full repeat suite 107 passed in 26.69s; pip check/compileall/diff checks passed. Merged-main CI passed. Application, tests and packaging remain identical to v0.1.0; review changes documentation/tracker only. Reconciled historical scope/status and acceptance evidence. Open R-01: show/hide only on saved-entry details, partial NFR-USE-03; fresh final-APK phone tests and other mandatory evidence remain open, not waived. User approved this review and merging PR #2; no production readiness, instructor submission or phase-two authorization claimed | Yes — user replied `Passkey` to approve the review and merge |
 | 2026-10-24 | 9.10 verification | Passed within stated scope | Review commit `bc3d67bd8a3ea79bf09c0dd034b4cb4d26cd9f84` published in [PR #2](https://github.com/xominnow/password-manager/pull/2); [review CI](https://github.com/xominnow/password-manager/actions/runs/40146804848) succeeded. Bounded 158-path scan found no matching secret/key/vault candidates. The PR was left unmerged pending approval at verification time; the subsequent user approval is recorded above. Later approval bookkeeping does not change the release artifact | Verification evidence; task approval recorded above |
+| 2026-10-24 | R-01 | Complete | Implemented independent toggles on all six inputs, masked defaults/reset on cleanup/navigation/lock and draft-preserving generator return. Full final suite 132 passed in 36.27s (25 new visibility cases); pip check/compileall passed. Four synthetic desktop previews visually reviewed; 74 Markdown documents have no broken local links/unbalanced fences. Bounded 160-path scan found no matching secret/key/vault candidates. [Evidence](docs/testing/password-field-visibility.md) and manuals updated. User approved completion, merging PR #3 and beginning the APK rebuild/phone-verification step. Existing published APK/tag remain unchanged; no phase-two work performed | Yes — user supplied `PASSKEY` |
+| 2026-10-24 | R-01 verification | Passed within stated scope | Source commit `791424c5a71d2cd92a1081573fe5f1402e3c445f` published in [PR #3](https://github.com/xominnow/password-manager/pull/3); [GitHub CI](https://github.com/xominnow/password-manager/actions/runs/40148524382) succeeded. At verification time PR was unmerged pending the subsequent approval recorded above. Crypto, storage, platform controls, requirements and packaging files have no diff from v0.1.0. No APK was rebuilt/uploaded during R-01; phone results remain pending | Verification evidence; subsequent task approval recorded above |
+| 2026-10-24 | R-01 CI stability | Corrected; rerun pending | Approval-commit [CI 40148973249](https://github.com/xominnow/password-manager/actions/runs/40148973249) found 131 passes and one exact-boundary timer-test failure. Replaced fractional real-clock seeding with exact fake-clock values; application behavior and 120-second timeout unchanged. Focused case passed (1 in 1.46s), then full local suite 132 passed in 33.36s. Merge waits for remote rerun | Within approved verification; no new product behavior |

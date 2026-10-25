@@ -5,6 +5,11 @@ Lockbox is an Android password-manager prototype for one person on one device.
 Use test accounts during evaluation; it has not undergone an independent
 production security audit.
 
+Post-release R-01 source update: the Show/Hide buttons for password-entry
+fields described below are implemented on the remediation review branch, not
+in the published `v0.1.0` APK. They require an approved rebuild/install before
+phone use. Existing saved-entry Show/Hide is already part of `v0.1.0`.
+
 ## Before you start
 
 For illustrated screens, see the [UI capture gallery](../ui/screenshots/README.md).
@@ -45,6 +50,21 @@ Python, WSL, and development tools are not required to use the installed app.
 Once installed, Lockbox's vault functions work without Internet access.
 
 ## Create your vault
+
+### Password visibility (R-01 source update)
+
+Password inputs start hidden. Tap **Show master password**, **Show new master
+password**, **Show confirmation**, or **Show password** under the corresponding
+field to see what you typed. The label changes to **Hide ...**; tap it again
+to mask that field. Each confirmation is controlled independently. Scroll if
+the keyboard or larger text places a button below the visible area.
+
+These controls do not copy or save a password. Leaving the screen or locking
+re-hides inputs; returning from the generator also re-hides the entry password
+while preserving the draft. Saved-entry details retain their own Show/Hide
+and Copy controls. See [R-01 validation and release status](../testing/password-field-visibility.md).
+
+### Setup steps
 
 1. On **Create your vault**, enter a master password and enter it again in
    **Confirm master password**.

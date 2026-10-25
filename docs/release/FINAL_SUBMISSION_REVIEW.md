@@ -6,6 +6,12 @@ The user approved completion of this review and merging PR #2 by replying
 `Passkey`. This approves the review task, not a waiver of the open conditions
 below, additional application changes, or phase-two development.
 
+Subsequent R-01 decision: the user separately authorized fixing the missing
+password-entry Show/Hide controls. That source remediation and its local
+132-test result are documented in [R-01 evidence](../testing/password-field-visibility.md).
+The source fix is approved; rebuild and phone validation are pending. The original
+review evidence below remains historical, and `v0.1.0` is unchanged.
+
 ## Conclusion
 
 All requested deliverable categories are represented in the repository and
@@ -103,7 +109,7 @@ functional/non-functional acceptance criteria passed.
 | AC-02 / SEC-AC-05 completeness | Final Android application log review and complete Git-history inspection remain outstanding; local synthetic tests and bounded scans are not universal proof of no leakage |
 | Q-AC-02 / Q-AC-03 | Record loaded search/navigation <=1 second and a usable 100-entry synthetic vault on the test phone |
 | Q-AC-04 independent rebuild | Reproduce from the tagged source using documented instructions on a clean environment; the successful cached WSL rebuild does not meet that stronger evidence standard |
-| R-01 / NFR-USE-03 show/hide coverage | Source review confirms Show/Hide only on saved-credential details. Setup/login/new-master and credential-edit password inputs are masked without a toggle. The broad password-field requirement is only partially implemented; implementing the remaining toggles or explicitly accepting the narrowed behavior needs a user decision. No waiver has been received |
+| R-01 / NFR-USE-03 show/hide coverage | Original review found controls only on saved-entry details. The user authorized and approved the source fix; all six inputs now have locally tested controls. A matching APK rebuild and phone validation remain pending; this is remediation, not a waiver |
 | Broader assurance | Other devices/Android versions, novice users, accessibility and independent security/supply-chain testing remain unverified. No every-phone or production-readiness claim is justified |
 
 Q-AC-05 documentation presence is verified by the inventory above. That does not

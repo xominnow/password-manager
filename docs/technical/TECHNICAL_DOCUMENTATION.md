@@ -131,6 +131,15 @@ guaranteed secure erasure of freed storage. No automatic backup/export exists.
 
 ## UI, sessions, and platform behavior
 
+Post-release R-01 source adds `BaseScreen.add_password_input()` for all six
+password inputs, each with an independent Show/Hide button. The toggle updates
+only `TextInput.password`; the bound label stays synchronized, and a click
+records qualifying activity without authenticating or copying. Shared cleanup
+and pre-leave hooks reset masking, including the draft-preserving generator
+path. Successful setup also resets masking before key acknowledgement. See
+[R-01 tests and release boundary](../testing/password-field-visibility.md).
+The published `v0.1.0` APK does not contain this later UI change.
+
 Screens use a vertical ScrollView with content height derived from layout minima.
 Labels and buttons wrap and grow from texture height; inputs grow with font size.
 Keyboard focus/viewport changes schedule scrolling to the focused field. Kivy
@@ -142,8 +151,9 @@ live changes to Android font settings may require restarting the app.
 
 A one-second Kivy timer checks clipboard expiry then inactivity. Inactivity uses
 `time.monotonic()` with a 120-second threshold. Current activity updates come
-from tracked input changes, navigation and authenticated controller actions;
-not every possible raw touch is tracked. Manual/automatic lock drops the vault
+from tracked input changes, navigation, authenticated controller actions and,
+in the R-01 source, password-visibility clicks. Not every raw touch is tracked.
+Manual/automatic lock drops the vault
 key reference and current view, then invokes cleanup on all screens.
 
 Screen transitions clear fields and secret displays. Entry-to-generator navigation
