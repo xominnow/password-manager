@@ -1,8 +1,9 @@
 # R-01: password-entry visibility remediation
 
 Prepared 2026-10-24. Execution authorized by the user's PASSKEY after the final
-submission review. **Implemented and locally verified; completion approval,
-merge, APK rebuild and physical-device verification remain pending.**
+submission review. **Source fix approved and locally verified; APK rebuild and
+physical-device verification are separately authorized and remain pending.**
+The user's subsequent PASSKEY approved R-01 completion and merging PR #3.
 
 ## Scope and behavior
 

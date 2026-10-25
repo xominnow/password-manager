@@ -135,7 +135,7 @@ execution evidence is recorded separately from local results in the snapshot rec
   wider accessibility/device testing and independent clean-build reproduction retain gaps.
 - No independent security/supply-chain audit or production signing has been completed.
 - The published APK lacks R-01's password-entry Show/Hide controls. The source
-  fix is locally tested but awaits approval, rebuild and phone validation.
+  fix is approved and locally tested; a matching rebuild and phone validation are pending.
 
 See the [complete limitation register](docs/release/known-limitations.md).
 
