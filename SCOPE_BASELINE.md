@@ -1,8 +1,24 @@
 # Scope Baseline and Acceptance Criteria
 
-**Status:** Draft for review
+**Status:** Historical approved baseline; later decisions supersede items noted below
 **Related checklist task:** 0.1
 **Deadline:** October 21, 2026
+
+## Final review clarification (task 9.10)
+
+The original assumptions below are retained as planning history, not a current
+implementation specification. Later approved decisions use **Scrypt**, not
+Argon2id; distribute a debug APK through a **public GitHub Release**, not private
+sharing; and generate **16 case-sensitive alphanumeric** recovery keys. The key
+is displayed once at setup but remains reusable for resets; it is not a
+single-use token. Clipboard clearing is best effort, and keyboard-history
+retention was observed with its fix explicitly skipped by the user.
+
+See [security decisions](docs/architecture/security-decisions.md),
+[current technical documentation](docs/technical/TECHNICAL_DOCUMENTATION.md)
+and the [final submission review](docs/release/FINAL_SUBMISSION_REVIEW.md) for
+current behavior and remaining acceptance gaps. Those gaps have not been
+silently waived by approving completed development tasks.
 
 ## Product definition
 

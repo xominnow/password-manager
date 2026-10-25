@@ -38,6 +38,7 @@ separate final phone results.
 | KL-11 | KDF cost upper bounds incomplete | Minimum Scrypt costs are checked; malicious stored cost values can still cause excessive resource use |
 | KL-12 | No complete numbered migration engine | A schema ledger and future-version rejection exist; arbitrary older schemas are not automatically upgraded by tested transformations |
 | KL-13 | Trust in OS, dependencies and installer | Rooted/compromised-device, privileged-malware, external-camera and forensic resistance are not established; no independent supply-chain audit |
+| KL-14 | Show/hide is limited to saved-credential details | Setup/login/new-master and credential-edit password inputs stay masked without a toggle. Final review R-01 identifies partial NFR-USE-03 implementation; no waiver or fix is approved |
 
 Documenting these constraints does not approve new requirements waivers. Only
 the clipboard-history remediation was explicitly skipped.
@@ -66,8 +67,8 @@ Installing on another phone creates an independent vault, not a synchronized cop
 | Secrets/logs | Synthetic local disk/column/log checks and bounded working-file token scan pass | Complete Git-history scan and final Android application logs |
 | Offline/permissions | Airplane workflows passed historically; task 9.9 rebuilt manifest requests no permissions | Fresh snapshot APK's offline phone retest |
 | Installation/update | Initial install and same-version data-preserving reinstall user-reported Pass | Fresh release on another phone, different-version/schema migration, separate post-update recovery result |
-| Artifact identity | Task 9.9 records rebuilt APK hash, signature and all 25 application bytecode/source matches | Publication verification is logged separately; independent clean rebuild and fresh snapshot phone smoke test |
-| Automation/assurance | Final local suite 107 passed in 26.51s after final adjustment; CI configured with Xvfb/software graphics | Remote CI evidence is logged separately; independent security audit |
+| Artifact identity | Task 9.9 verified APK hash/signature, all 25 application bytecode/source matches, full public APK download and 157 tagged ZIP files | Independent clean rebuild and fresh snapshot phone smoke test |
+| Automation/assurance | Final local suite 107 passed in 26.51s; tagged-source and approval-commit GitHub CI passed with Xvfb/software graphics | Independent security audit; CI does not replace phone tests |
 
 These are overlapping test runs, not 112 different cases. Missing evidence
 does not become a pass because execution tasks were approved. Mandatory
@@ -83,8 +84,9 @@ package/signing identity for data-preserving updates; keep keys outside Git.
 The toolchain and transitive dependencies are not fully locked.
 
 Final source/tag/APK reconciliation is recorded in task 9.9. GUI evidence uses
-synthetic desktop captures, not phone screenshots. Final submission review
-remains a separate task. This document does not establish
+synthetic desktop captures, not phone screenshots. The
+[final submission review](FINAL_SUBMISSION_REVIEW.md) records deliverable presence
+and open acceptance conditions; completion approval is separate. This document does not establish
 uptime, ongoing maintenance, or a long-term vulnerability-response service.
 
 ## Remediated findings

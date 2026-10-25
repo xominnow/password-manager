@@ -2,7 +2,11 @@
 
 **Project:** Android Password Manager
 **Related checklist task:** 1.5
-**Status:** Draft for review
+**Status:** Approved criteria; not all acceptance evidence is complete
+
+Task approval is not equivalent to passing every criterion. The
+[final submission review](../release/FINAL_SUBMISSION_REVIEW.md) distinguishes
+deliverable presence, recorded test passes, approved exceptions and open checks.
 
 The MVP is accepted only when all mandatory criteria pass and the evidence is recorded in the test results. Any exception must be documented as a known limitation and explicitly approved before submission.
 

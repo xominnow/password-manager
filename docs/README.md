@@ -34,6 +34,14 @@ download, WSL builds, Windows ADB installation, checksums and updates;
 [GitHub release instructions](release/github-release.md) cover public distribution.
 The [final source/APK snapshot record](release/final-source-snapshot.md)
 provides artifact identity and task 9.9 verification boundaries.
+The [final submission review](release/FINAL_SUBMISSION_REVIEW.md) inventories
+every required deliverable and identifies open acceptance checks.
+
+Earlier numbered phase reports and task-specific technical notes preserve
+historical states, including their original "draft"/service-only labels.
+Use the current consolidated guides, security decision register and final
+review for implementation status; those historical labels do not negate
+recorded task approvals or imply missing UI integration today.
 
 The [known limitations](release/known-limitations.md) register separates observed
 issues, product/security constraints, deferred features and coverage gaps.

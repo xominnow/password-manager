@@ -2,8 +2,10 @@
 
 Task 9.9, prepared 2026-10-24. Release target: `v0.1.0`; application version
 remains `0.1.0`. This is a capstone prototype/debug pre-release, not a
-production-security certification. Task completion and merging require the
-user's subsequent PASSKEY; task 9.10 final submission review remains separate.
+production-security certification. The user approved task 9.9 with PASSKEY;
+PR #1 was merged as `e3b691c7958a916b057d081168b912c49fe31cdd`.
+Task 9.10 final review is documented separately and still needs completion approval.
+This post-tag documentation update does not change the immutable tag or APK.
 
 ## Source and release identity
 
@@ -13,8 +15,11 @@ user's subsequent PASSKEY; task 9.10 final submission review remains separate.
   source commit with `git rev-parse 'v0.1.0^{commit}'`.
 - [Snapshot release](https://github.com/xominnow/password-manager/releases/tag/v0.1.0)
   and [source ZIP](https://github.com/xominnow/password-manager/archive/refs/tags/v0.1.0.zip)
-  are the publication targets. Publication/download verification is recorded
-  in the task progress log after these operations succeed.
+  are published. Tag commit: `20957cbe7619e9fee736094352d67013754e3208`.
+  Full unauthenticated APK download matched the SHA-256 below; all 157 downloaded
+  source files matched the tagged Git archive using canonical LF line endings.
+  [Final-tag CI](https://github.com/xominnow/password-manager/actions/runs/40141705029)
+  passed. The task progress log records subsequent approval and merge evidence.
 - Existing `Lockbox_V0.1.0` tag/release is preserved, not retagged or replaced.
   Its tag points to foundation commit `51f811db60cac0c10ae8653f978c323b8247c7dd`;
   it does not identify the later tested working tree.
